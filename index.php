@@ -9,6 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?php echo $title ?></title>
     <script src="GM_Utils/GPX2GM.js"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 35em;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,7 +34,7 @@
         echo "<option value='map:$track'>$track</option>";
     }
     echo '</select>';
-    echo "<div id='map' class='gpxview:$track:OSM' style='width:800px;height:600px'></div>";
+    echo "<div id='map' class='gpxview:$track:OSM'></div>";
     echo "<noscript><p>Enable JavaScript to view the map.</p></noscript>";
     ?>
     <button type="button" class="gpxview:map:skaliere">Reset position and zoom</button>
