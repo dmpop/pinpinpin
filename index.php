@@ -13,6 +13,9 @@
 
 <body>
     <?php
+    if (!file_exists("gpx")) {
+        mkdir("gpx", 0755, true);
+    }
     $title = "GPX on map";
     $blurb = "This is a simple example of using the GPX Viewer JavaScript library to generate maps with GPX tracks.";
     echo "<h1 style='margin-top: 0em;'>$title</h1>";
@@ -33,6 +36,7 @@
         var Shwpname = false;
         var Legende_fnm = false;
         var Fullscreenbutton = true;
+        var Arrowtrack = true;
     </script>
 </body>
 
