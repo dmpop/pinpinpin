@@ -13,7 +13,7 @@
         #map {
             width: 100%;
             height: 35em;
-            margin: 0;
+            margin-top: 2em;
             padding: 0;
         }
     </style>
@@ -26,7 +26,12 @@
     }
     $title = "GPX on map";
     $blurb = "This is a simple example of using the GPX Viewer JavaScript library to generate maps with GPX tracks.";
-    echo "<h1 style='margin-top: 0em;'>$title</h1>";
+    ?>
+    <div style="text-align: center;">
+        <img style="display: inline; height: 2.5em; vertical-align: middle;" src="favicon.svg" alt="logo" />
+        <h1 style="display: inline; margin-left: 0.19em; vertical-align: middle; margin-top: 0em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
+    </div>
+    <?php
     echo "<p>$blurb</p>";
     echo 'Track: <select class="gpxview">';
     $files = glob("gpx/*.gpx");
