@@ -1,5 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$title = "Ifti";
+$blurb = "This is a simple example of using the GPX Viewer JavaScript library to generate maps with GPX tracks.";
+$theme = "light";
+if (!file_exists("gpx")) {
+    mkdir("gpx", 0755, true);
+}
+?>
+
+
+<html lang="en" data-theme="<?php echo $theme; ?>">
 
 <head>
     <meta charset="utf-8">
@@ -20,18 +29,16 @@
 </head>
 
 <body>
-    <?php
-    if (!file_exists("gpx")) {
-        mkdir("gpx", 0755, true);
-    }
-    $title = "GPX on map";
-    $blurb = "This is a simple example of using the GPX Viewer JavaScript library to generate maps with GPX tracks.";
-    ?>
     <div style="text-align: center;">
         <img style="display: inline; height: 2.5em; vertical-align: middle;" src="favicon.svg" alt="logo" />
         <h1 style="display: inline; margin-left: 0.19em; vertical-align: middle; margin-top: 0em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
     </div>
     <?php
+    $iterator = new \FilesystemIterator("gpx");
+    $isDirEmpty = !$iterator->valid();
+    if ($isDirEmpty) {
+        exit('<div style="text-align: center; margin-top: 2em;">No GPX files found.</div>');
+    }
     echo "<p>$blurb</p>";
     echo 'Track: <select class="gpxview">';
     $files = glob("gpx/*.gpx");

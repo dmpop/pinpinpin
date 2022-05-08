@@ -1,4 +1,4 @@
-# GPX Viewer
+# Ifti
 
 A quick-and-dirty PHP application to view GPX tracks on the map.
 
