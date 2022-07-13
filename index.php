@@ -1,63 +1,97 @@
-<?php
-$title = "Ifti";
-$blurb = "This is a simple example of using the GPX Viewer JavaScript library to generate maps with GPX tracks.";
-$theme = "light";
-if (!file_exists("gpx")) {
-    mkdir("gpx", 0755, true);
-}
-?>
-
-
-<html lang="en" data-theme="<?php echo $theme; ?>">
+<!DOCTYPE html>
+<html>
+<!-- Most of the code has been lifted from https://meggsimum.de/webkarte-mit-gps-track-vom-sport/ -->
 
 <head>
-    <meta charset="utf-8">
+    <title>Ifti</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="favicon.png" />
-    <link rel="stylesheet" href="css/classless.css" />
-    <link rel="stylesheet" href="css/themes.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $title ?></title>
-    <script src="GM_Utils/GPX2GM.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.8.0/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.8.0/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
     <style>
+        html,
+        body,
         #map {
+            margin: 0;
+            height: 100%;
             width: 100%;
-            height: 35em;
-            margin-top: 2em;
-            padding: 0;
         }
     </style>
 </head>
 
 <body>
-    <div style="text-align: center;">
-        <img style="display: inline; height: 2.5em; vertical-align: middle;" src="favicon.svg" alt="logo" />
-        <h1 style="display: inline; margin-left: 0.19em; vertical-align: middle; margin-top: 0em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
-    </div>
+
     <?php
-    $iterator = new \FilesystemIterator("gpx");
-    $isDirEmpty = !$iterator->valid();
-    if ($isDirEmpty) {
-        exit('<div style="text-align: center; margin-top: 2em;">No GPX files found.</div>');
-    }
-    echo "<p>$blurb</p>";
-    echo 'Track: <select class="gpxview">';
-    $files = glob("gpx/*.gpx");
-    foreach ($files as $track) {
-        echo "<option value='map:$track'>$track</option>";
-    }
-    echo '</select>';
-    echo "<div id='map' class='gpxview:$track:OSM'></div>";
-    echo "<noscript><p>Enable JavaScript to view the map.</p></noscript>";
+    $gpx_dir = "gpx";
+    $files = scandir($gpx_dir, SCANDIR_SORT_DESCENDING);
+    $gpx_file = $gpx_dir . DIRECTORY_SEPARATOR .  $files[0];
+    echo "<code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: " . $files[0] . "</code>";
     ?>
-    <button type="button" class="gpxview:map:skaliere">Reset position and zoom</button>
-    </noscript>
-    <script>
-        var Bestaetigung = false;
-        var Shwpname = false;
-        var Legende_fnm = false;
-        var Fullscreenbutton = true;
-        var Arrowtrack = true;
-    </script>
+
+    <body onload="init()">
+
+        <script type="text/javascript">
+            var init = function() {
+
+                var map = new L.Map('map', {
+                        crs: L.CRS.EPSG900913,
+                        continuousWorld: true,
+                        worldCopyJump: false,
+                        zoom: 13
+                    }),
+                    osmWms = L.tileLayer.wms("http://ows.terrestris.de/osm/service", {
+                        layers: 'OSM-WMS',
+                        format: 'image/png',
+                        transparent: true,
+                        attribution: '&copy; www.meggsimum.de </br>Background-WMS: &copy; terrestris GmbH &amp; Co. KG, Data © OpenStreetMap <a href="http://www.openstreetmap.org/copyright">contributors</a>'
+                    });
+
+                // Add the background layer to the map
+                osmWms.addTo(map);
+
+                // Define the GPX layer
+                var pathGpxTrack = '<?php echo $gpx_file; ?>',
+                    markerOptions = {
+                        startIconUrl: 'pin-icon-start.png',
+                        endIconUrl: 'pin-icon-end.png',
+                        shadowUrl: 'pin-shadow.png',
+                    };
+
+                // Add track to the map
+                var gpxTrack = new L.GPX(
+                    '<?php echo $gpx_file; ?>', {
+                        async: true,
+                        max_point_interval: 120000,
+                        polyline_options: {
+                            color: '#005ce6'
+                        },
+                    }
+                );
+                // Add the GPX layer to the map
+                gpxTrack.addTo(map);
+
+                // Register popups on click
+                // Set initial zoom
+                gpxTrack.on('loaded', function(e) {
+                    var gpx = e.target,
+                        distM = gpx.get_distance(),
+                        distKm = distM / 1000,
+                        distKmRnd = distKm.toFixed(1);
+
+                    gpx.getLayers()[0].bindPopup(
+                        "Distance " + distKmRnd + " km"
+                    );
+                    // Zoom to the GPX track
+                    map.fitBounds(gpx.getBounds());
+                });
+
+                L.control.layers(background, overlays).addTo(map);
+            }
+        </script>
+        <div id="map"></div>
+    </body>
 </body>
 
 </html>
