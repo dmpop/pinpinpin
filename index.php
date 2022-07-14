@@ -78,10 +78,13 @@
                     var gpx = e.target,
                         distM = gpx.get_distance(),
                         distKm = distM / 1000,
-                        distKmRnd = distKm.toFixed(1);
+                        distKmRnd = distKm.toFixed(1),
+                        speedKmh = gpx.get_moving_speed(),
+                        speedKmhRnd = speedKmh.toFixed(1);
 
                     gpx.getLayers()[0].bindPopup(
-                        "Distance " + distKmRnd + " km"
+                        "Total distance: " + distKmRnd + " km</br>" +
+                        "Average speed: " + speedKmhRnd + " km/h"
                     );
                     // Zoom to the GPX track
                     map.fitBounds(gpx.getBounds());
