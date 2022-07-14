@@ -35,18 +35,12 @@
         <script type="text/javascript">
             var init = function() {
 
-                var map = new L.Map('map', {
-                        crs: L.CRS.EPSG900913,
-                        continuousWorld: true,
-                        worldCopyJump: false,
-                        zoom: 13
-                    }),
-                    osmWms = L.tileLayer.wms("http://ows.terrestris.de/osm/service", {
-                        layers: 'OSM-WMS',
-                        format: 'image/png',
-                        transparent: true,
-                        attribution: '&copy; www.meggsimum.de </br>Background-WMS: &copy; terrestris GmbH &amp; Co. KG, Data © OpenStreetMap <a href="http://www.openstreetmap.org/copyright">contributors</a>'
-                    });
+                var map = L.map('map').setView([11.206051, 122.447886], 8);
+                L.tileLayer(
+                    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+                        maxZoom: 18,
+                    }).addTo(map);
 
                 // Add the background layer to the map
                 osmWms.addTo(map);
