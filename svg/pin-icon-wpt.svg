@@ -29,10 +29,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="-351.686"
+     inkscape:cx="390.40446"
      inkscape:cy="150.72848"
      inkscape:document-units="mm"
-     inkscape:current-layer="g831"
+     inkscape:current-layer="g817"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -42,7 +42,15 @@
      inkscape:window-height="1106"
      inkscape:window-x="431"
      inkscape:window-y="103"
-     inkscape:window-maximized="0" />
+     inkscape:window-maximized="0"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       position="-338.28869,50.270832"
+       orientation="0,1"
+       id="guide819"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
   <metadata
      id="metadata819">
     <rdf:RDF>
@@ -68,7 +76,7 @@
          transform="matrix(0.92429716,0,0,0.92429716,7.9864463,7.9781872)">
         <path
            style="fill:#00ccff;fill-opacity:1;stroke:#16a2d4;stroke-width:5.99698257;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 139.93519,103.2158 c 0,19.01949 -34.43784,55.52051 -34.43784,55.52051 0,0 -34.437825,-36.50102 -34.437823,-55.52051 2e-6,-19.019484 15.418341,-34.437823 34.437823,-34.437825 19.01949,-2e-6 34.43784,15.418339 34.43784,34.437825 z"
+           d="m 139.93519,103.2158 c 0,22.90593 -34.43784,55.52051 -34.43784,55.52051 0,0 -34.437825,-32.61458 -34.437823,-55.52051 2e-6,-19.019484 15.418341,-34.437823 34.437823,-34.437825 19.01949,-2e-6 34.43784,15.418339 34.43784,34.437825 z"
            id="path824"
            inkscape:connector-curvature="0"
            sodipodi:nodetypes="scsss" />
