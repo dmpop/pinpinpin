@@ -1,3 +1,13 @@
+<?php
+$gpx_dir = "gpx";
+$photo_dir = "";
+
+// Check whether the $gpx_dir is empty
+if (count(glob($gpx_dir . DIRECTORY_SEPARATOR . '*')) === 0) {
+    exit("<code>No GPX files found.</code>");
+};
+?>
+
 <!DOCTYPE html>
 
 <!--
@@ -36,9 +46,6 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
 <body>
 
     <?php
-    // TODO Check whether the gpx dir exists
-    $gpx_dir = "gpx";
-    $photo_dir = "";
     $files = scandir($gpx_dir, SCANDIR_SORT_DESCENDING);
     $gpx_file = $gpx_dir . DIRECTORY_SEPARATOR .  $files[0];
     echo "<code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: " . $files[0] . "</code>";
