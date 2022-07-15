@@ -2,9 +2,13 @@
 $gpx_dir = "gpx";
 $photo_dir = "";
 
-// Check whether the $gpx_dir is empty
+// Check if the $gpx_dir is empty
 if (count(glob($gpx_dir . DIRECTORY_SEPARATOR . '*')) === 0) {
-    exit("<code>No GPX files found.</code>");
+    exit("<center><code style='color: red;'>No GPX files found.</code></center>");
+};
+// Check if the $photo_dir exists and not empty
+if (!empty($photo_dir) && (count(glob($photo_dir . DIRECTORY_SEPARATOR . '*')) === 0)) {
+    exit("<center><code style='color: red;'>The directory either doesn't exist or it's empty.</code></center>");
 };
 ?>
 
@@ -37,7 +41,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
         body,
         #map {
             margin: 0;
-            height: 100%;
+            height: 99%;
             width: 100%;
         }
     </style>
@@ -48,7 +52,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <?php
     $files = scandir($gpx_dir, SCANDIR_SORT_DESCENDING);
     $gpx_file = $gpx_dir . DIRECTORY_SEPARATOR .  $files[0];
-    echo "<code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: " . $files[0] . "</code>";
+    echo "<center><code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: " . $files[0] . "</code></center>";
 
     function read_gps_location($file)
     {
