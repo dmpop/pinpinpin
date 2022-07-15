@@ -42,9 +42,6 @@
                         maxZoom: 18,
                     }).addTo(map);
 
-                // Add the background layer to the map
-                osmWms.addTo(map);
-
                 // Define the GPX layer
                 var pathGpxTrack = '<?php echo $gpx_file; ?>',
                     markerOptions = {
