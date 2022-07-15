@@ -29,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="176.88543"
+     inkscape:cx="-87.400284"
      inkscape:cy="150.72848"
      inkscape:document-units="mm"
      inkscape:current-layer="g831"
@@ -51,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -64,20 +64,20 @@
        id="g831"
        transform="matrix(1.4705882,0,0,1.4705882,-45.466905,-44.722164)">
       <g
-         id="g854"
-         transform="matrix(1.1111111,0,0,1.1111111,-7.8955009,-17.637364)">
+         id="g823"
+         transform="matrix(0.92429716,0,0,0.92429716,7.9864463,7.9781872)">
         <path
-           style="fill:#55d400;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 133.04762,108.76785 c 0,17.11754 -30.99405,49.96846 -30.99405,49.96846 0,0 -30.994046,-32.85092 -30.994044,-49.96846 2e-6,-17.117537 13.876507,-30.994042 30.994044,-30.994044 17.11754,-2e-6 30.99405,13.876505 30.99405,30.994044 z"
+           style="fill:#55d400;fill-opacity:1;stroke:#00bd59;stroke-width:5.99698257;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 139.93519,103.2158 c 0,19.01949 -34.43784,55.52051 -34.43784,55.52051 0,0 -34.437825,-36.50102 -34.437823,-55.52051 2e-6,-19.019484 15.418341,-34.437823 34.437823,-34.437825 19.01949,-2e-6 34.43784,15.418339 34.43784,34.437825 z"
            id="path824"
            inkscape:connector-curvature="0"
            sodipodi:nodetypes="scsss" />
         <circle
-           style="fill:#ffffff;fill-opacity:1;stroke:#00bd59;stroke-width:5.39750004;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:#ffffff;fill-opacity:1;stroke:#00bd59;stroke-width:5.99698257;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="path826"
-           cx="102.05357"
-           cy="107.35423"
-           r="14.46137" />
+           cx="105.49736"
+           cy="101.64512"
+           r="16.06819" />
       </g>
     </g>
   </g>

@@ -29,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="-87.400284"
+     inkscape:cx="-351.686"
      inkscape:cy="150.72848"
      inkscape:document-units="mm"
      inkscape:current-layer="g831"
@@ -51,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -63,18 +63,22 @@
     <g
        id="g831"
        transform="matrix(1.4705882,0,0,1.4705882,-45.466905,-44.722164)">
-      <path
-         sodipodi:nodetypes="scsss"
-         inkscape:connector-curvature="0"
-         id="path824"
-         d="m 139.93519,103.2158 c 0,19.01949 -34.43784,55.52051 -34.43784,55.52051 0,0 -34.437825,-36.50102 -34.437823,-55.52051 2e-6,-19.019484 15.418341,-34.437823 34.437823,-34.437825 19.01949,-2e-6 34.43784,15.418339 34.43784,34.437825 z"
-         style="fill:#ff8080;fill-opacity:1;stroke:none;stroke-width:0.58796293;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <circle
-         r="16.06819"
-         cy="101.64512"
-         cx="105.49736"
-         id="path826"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ff463b;stroke-width:5.99722242;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <g
+         id="g817"
+         transform="matrix(0.92429716,0,0,0.92429716,7.9864463,7.9781872)">
+        <path
+           style="fill:#ff8080;fill-opacity:1;stroke:#ff463b;stroke-width:5.99698257;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 139.93519,103.2158 c 0,19.01949 -34.43784,55.52051 -34.43784,55.52051 0,0 -34.437825,-36.50102 -34.437823,-55.52051 2e-6,-19.019484 15.418341,-34.437823 34.437823,-34.437825 19.01949,-2e-6 34.43784,15.418339 34.43784,34.437825 z"
+           id="path824"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="scsss" />
+        <circle
+           style="fill:#ffffff;fill-opacity:1;stroke:#ff463b;stroke-width:5.99698257;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path826"
+           cx="105.49736"
+           cy="101.64512"
+           r="16.06819" />
+      </g>
     </g>
   </g>
 </svg>
