@@ -1,14 +1,19 @@
 <?php
 $gpx_dir = "gpx";
-$photo_dir = "";
+$photo_dir = "photos";
+
+// Create $gpx_dir if it doesn't exist
+if (!file_exists($gpx_dir)) {
+    mkdir($gpx_dir, 0755, true);
+}
+// Create $photo_dir if it doesn't exist
+if (!empty($photo_dir) && !file_exists($photo_dir)) {
+    mkdir($photo_dir, 0755, true);
+}
 
 // Check if the $gpx_dir is empty
 if (count(glob($gpx_dir . DIRECTORY_SEPARATOR . '*')) === 0) {
     exit("<center><code style='color: red;'>No GPX files found.</code></center>");
-};
-// Check if the $photo_dir exists and not empty
-if (!empty($photo_dir) && (count(glob($photo_dir . DIRECTORY_SEPARATOR . '*')) === 0)) {
-    exit("<center><code style='color: red;'>The directory either doesn't exist or it's empty.</code></center>");
 };
 ?>
 
@@ -140,12 +145,15 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                 <?php
                 if ($photo_dir) {
                     $photos = glob($photo_dir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE);
-                    foreach ($photos as $file) {
-                        $gps = read_gps_location($file);
-                        echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
-                        echo  'icon: wptPin';
-                        echo "}).addTo(map)";
-                        echo ".bindPopup('<img src=\"" . $file . "\" width=100px />');";
+                    // Check if the $photo_dir is not empty
+                    if (count(glob($photo_dir . DIRECTORY_SEPARATOR . '*')) > 0) {
+                        foreach ($photos as $file) {
+                            $gps = read_gps_location($file);
+                            echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
+                            echo  'icon: wptPin';
+                            echo "}).addTo(map)";
+                            echo ".bindPopup('<img src=\"" . $file . "\" width=100px />');";
+                        }
                     }
                 }
                 ?>
