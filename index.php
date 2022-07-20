@@ -54,7 +54,34 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
 
 <body>
 
+    <p id="geolocation"></p>
+    <script>
+        window.onload = getLocation();
+        var x = document.getElementById("geolocation");
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(currentPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported.";
+            }
+        }
+
+        function currentPosition(position) {
+            document.cookie = "posLat = ; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "posLon = ; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "posLat = " + position.coords.latitude;
+            document.cookie = "posLon = " + position.coords.longitude;
+        }
+    </script>
+
     <?php
+
+    setcookie("posLat", "", time() - 3600);
+    setcookie("posLon", "", time() - 3600);
+    $lat = $_COOKIE['posLat'];
+    $lon = $_COOKIE['posLon'];
+
     $files = scandir($gpxDir, SCANDIR_SORT_DESCENDING);
     $gpxFile = $gpxDir . DIRECTORY_SEPARATOR .  $files[0];
     echo "<center><code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: " . $files[0] . "</code></center>";
@@ -140,6 +167,16 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                 var wptPin = L.icon({
                     iconUrl: 'pin-icon-wpt.png'
                 });
+                var posPin = L.icon({
+                    iconUrl: 'pin-icon-pos.png'
+                });
+
+                // Pin the current position
+                <?php
+                if (!empty($lat) && !empty($lon)) {
+                    echo 'L.marker([' . $lat . ',' . $lon . '], {icon: posPin}).addTo(map).bindPopup(\'You are here.\');';
+                }
+                ?>
 
                 // Add markers with popups
                 <?php
