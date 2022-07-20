@@ -1,18 +1,18 @@
 <?php
-$gpx_dir = "gpx";
-$photo_dir = "photos";
+$gpxDir = "gpx";
+$photoDir = "photos";
 
-// Create $gpx_dir if it doesn't exist
-if (!file_exists($gpx_dir)) {
-    mkdir($gpx_dir, 0755, true);
+// Create $gpxDir if it doesn't exist
+if (!file_exists($gpxDir)) {
+    mkdir($gpxDir, 0755, true);
 }
-// Create $photo_dir if it doesn't exist
-if (!empty($photo_dir) && !file_exists($photo_dir)) {
-    mkdir($photo_dir, 0755, true);
+// Create $photoDir if it doesn't exist
+if (!empty($photoDir) && !file_exists($photoDir)) {
+    mkdir($photoDir, 0755, true);
 }
 
-// Check if the $gpx_dir is empty
-if (count(glob($gpx_dir . DIRECTORY_SEPARATOR . '*')) === 0) {
+// Check if the $gpxDir is empty
+if (count(glob($gpxDir . DIRECTORY_SEPARATOR . '*')) === 0) {
     exit("<center><code style='color: red;'>No GPX files found.</code></center>");
 };
 ?>
@@ -55,8 +55,8 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
 <body>
 
     <?php
-    $files = scandir($gpx_dir, SCANDIR_SORT_DESCENDING);
-    $gpx_file = $gpx_dir . DIRECTORY_SEPARATOR .  $files[0];
+    $files = scandir($gpxDir, SCANDIR_SORT_DESCENDING);
+    $gpxFile = $gpxDir . DIRECTORY_SEPARATOR .  $files[0];
     echo "<center><code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: " . $files[0] . "</code></center>";
 
     function read_gps_location($file)
@@ -117,7 +117,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                     }).addTo(map);
 
                 // Define the GPX layer
-                var pathGpxTrack = '<?php echo $gpx_file; ?>'
+                var pathGpxTrack = '<?php echo $gpxFile; ?>'
                 markerOptions = {
                     startIconUrl: 'pin-icon-start.png',
                     endIconUrl: 'pin-icon-end.png',
@@ -126,7 +126,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
 
                 // Add track to the map
                 var gpxTrack = new L.GPX(
-                    '<?php echo $gpx_file; ?>', {
+                    '<?php echo $gpxFile; ?>', {
                         async: true,
                         max_point_interval: 120000,
                         polyline_options: {
@@ -143,10 +143,10 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
 
                 // Add markers with popups
                 <?php
-                if ($photo_dir) {
-                    $photos = glob($photo_dir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE);
-                    // Check if the $photo_dir is not empty
-                    if (count(glob($photo_dir . DIRECTORY_SEPARATOR . '*')) > 0) {
+                if ($photoDir) {
+                    $photos = glob($photoDir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE);
+                    // Check if the $photoDir is not empty
+                    if (count(glob($photoDir . DIRECTORY_SEPARATOR . '*')) > 0) {
                         foreach ($photos as $file) {
                             $gps = read_gps_location($file);
                             echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
