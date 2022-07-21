@@ -54,7 +54,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <?php
     $files = scandir($gpxDir, SCANDIR_SORT_DESCENDING);
     $gpxFile = $gpxDir . DIRECTORY_SEPARATOR .  $files[0];
-    echo "<center><code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: " . $files[0] . " <a href='photos.php'>Photos</a></code></center>";
+    echo "<center><code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: " . $files[0] . "<span style='float: right; margin-right: 1em;'><a href='photos.php'><img style='vertical-align:middle;' src='svg/image.svg' height=18 /></a></span></code></center>";
     ?>
 
     <body onload="init()">
