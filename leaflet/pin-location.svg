@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   aria-hidden="true"
+   focusable="false"
+   data-prefix="fas"
+   data-icon="location-arrow"
+   class="svg-inline--fa fa-location-arrow fa-w-16"
+   role="img"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="location-arrow-solid.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="2560"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <g
+     id="g833"
+     transform="matrix(28.444778,0,0,28.444778,-85.337336,-85.337336)">
+    <path
+       id="path2"
+       d="m 12,11 c 1.1046,0 2,-0.8954 2,-2 0,-1.10457 -0.8954,-2 -2,-2 -1.1046,0 -2,0.89543 -2,2 0,1.1046 0.8954,2 2,2 z"
+       inkscape:connector-curvature="0"
+       style="fill:currentColor" />
+    <path
+       id="path4"
+       d="m 18,9 c 0,2.973 -2.1623,5.441 -5,5.917 V 20 c 0,0.5523 -0.4477,1 -1,1 -0.5523,0 -1,-0.4477 -1,-1 V 14.917 C 8.16229,14.441 6,11.973 6,9 6,5.68629 8.68629,3 12,3 c 3.3137,0 6,2.68629 6,6 z m -6,4 c 2.2091,0 4,-1.7909 4,-4 C 16,6.79086 14.2091,5 12,5 9.79086,5 8,6.79086 8,9 c 0,2.2091 1.79086,4 4,4 z"
+       inkscape:connector-curvature="0"
+       style="clip-rule:evenodd;fill:currentColor;fill-rule:evenodd" />
+  </g>
+</svg>
