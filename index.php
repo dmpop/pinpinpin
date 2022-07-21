@@ -1,14 +1,9 @@
 <?php
 $gpxDir = "gpx";
-$photoDir = "photos";
 
 // Create $gpxDir if it doesn't exist
 if (!file_exists($gpxDir)) {
     mkdir($gpxDir, 0755, true);
-}
-// Create $photoDir if it doesn't exist
-if (!empty($photoDir) && !file_exists($photoDir)) {
-    mkdir($photoDir, 0755, true);
 }
 
 // Check if the $gpxDir is empty
@@ -38,9 +33,9 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="favicon.png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.8.0/leaflet.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.8.0/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+    <link rel="stylesheet" href="leaflet/leaflet.css" />
+    <script src="leaflet/leaflet.js"></script>
+    <script src="leaflet/gpx.js"></script>
     <style>
         html,
         body,
@@ -57,51 +52,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <?php
     $files = scandir($gpxDir, SCANDIR_SORT_DESCENDING);
     $gpxFile = $gpxDir . DIRECTORY_SEPARATOR .  $files[0];
-    echo "<center><code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: " . $files[0] . "</code></center>";
-
-    function read_gps_location($file)
-    {
-        if (is_file($file)) {
-            $info = exif_read_data($file);
-            if (
-                isset($info['GPSLatitude']) && isset($info['GPSLongitude']) &&
-                isset($info['GPSLatitudeRef']) && isset($info['GPSLongitudeRef']) &&
-                in_array($info['GPSLatitudeRef'], array('E', 'W', 'N', 'S')) && in_array($info['GPSLongitudeRef'], array('E', 'W', 'N', 'S'))
-            ) {
-
-                $GPSLatitudeRef     = strtolower(trim($info['GPSLatitudeRef']));
-                $GPSLongitudeRef = strtolower(trim($info['GPSLongitudeRef']));
-
-                $lat_degrees_a = explode('/', $info['GPSLatitude'][0]);
-                $lat_minutes_a = explode('/', $info['GPSLatitude'][1]);
-                $lat_seconds_a = explode('/', $info['GPSLatitude'][2]);
-                $lon_degrees_a = explode('/', $info['GPSLongitude'][0]);
-                $lon_minutes_a = explode('/', $info['GPSLongitude'][1]);
-                $lon_seconds_a = explode('/', $info['GPSLongitude'][2]);
-
-                $lat_degrees = $lat_degrees_a[0] / $lat_degrees_a[1];
-                $lat_minutes = $lat_minutes_a[0] / $lat_minutes_a[1];
-                $lat_seconds = $lat_seconds_a[0] / $lat_seconds_a[1];
-                $lon_degrees = $lon_degrees_a[0] / $lon_degrees_a[1];
-                $lon_minutes = $lon_minutes_a[0] / $lon_minutes_a[1];
-                $lon_seconds = $lon_seconds_a[0] / $lon_seconds_a[1];
-
-                $lat = (float) $lat_degrees + ((($lat_minutes * 60) + ($lat_seconds)) / 3600);
-                $lon = (float) $lon_degrees + ((($lon_minutes * 60) + ($lon_seconds)) / 3600);
-
-                // If the latitude is South, make it negative
-                // If the longitude is west, make it negative
-                $GPSLatitudeRef     == 's' ? $lat *= -1 : '';
-                $GPSLongitudeRef == 'w' ? $lon *= -1 : '';
-
-                return array(
-                    'lat' => $lat,
-                    'lon' => $lon
-                );
-            }
-        }
-        return false;
-    }
+    echo "<center><code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: " . $files[0] . " <a href='photos.php'>Photos</a></code></center>";
     ?>
 
     <body onload="init()">
@@ -140,23 +91,6 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                 var wptPin = L.icon({
                     iconUrl: 'pin-icon-wpt.png'
                 });
-
-                // Add markers with popups
-                <?php
-                if ($photoDir) {
-                    $photos = glob($photoDir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE);
-                    // Check if the $photoDir is not empty
-                    if (count(glob($photoDir . DIRECTORY_SEPARATOR . '*')) > 0) {
-                        foreach ($photos as $file) {
-                            $gps = read_gps_location($file);
-                            echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
-                            echo  'icon: wptPin';
-                            echo "}).addTo(map)";
-                            echo ".bindPopup('<img src=\"" . $file . "\" width=100px />');";
-                        }
-                    }
-                }
-                ?>
 
                 // Register popups on click
                 // Set initial zoom
