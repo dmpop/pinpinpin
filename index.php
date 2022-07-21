@@ -36,6 +36,8 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <script src="leaflet/leaflet.js"></script>
     <script src="leaflet/gpx.js"></script>
+    <link rel="stylesheet" href="leaflet/L.Control.Locate.min.css" />
+    <script src="leaflet/L.Control.Locate.min.js" charset="utf-8"></script>
     <style>
         html,
         body,
@@ -109,7 +111,11 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                     // Zoom to the GPX track
                     map.fitBounds(gpx.getBounds());
                 });
-
+                L.control.locate({
+                    strings: {
+                        title: "My current position"
+                    }
+                }).addTo(map);
                 L.control.layers(background, overlays).addTo(map);
             }
         </script>
