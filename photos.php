@@ -96,7 +96,11 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     ?>
 
     <body onload="init()">
-        <center><code>This is <a href='https://github.com/dmpop/ifti'>Ifti</a><span style='float: right; margin-right: 1em;'><a href='index.php'><img style='vertical-align:middle;' src='svg/pin-location.svg' height=18 /></a></span></code></center>
+        <div style="text-align: center;">
+            <code>
+                This is <a href='https://github.com/dmpop/ifti'>Ifti</a><span style='float: right; margin-right: 1em;'><a href='index.php'><img style='vertical-align:middle;' src='svg/pin-location.svg' height=18 /></a></span>
+            </code>
+        </div>
         <script type="text/javascript">
             var init = function() {
 
@@ -127,6 +131,5 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
         </script>
         <div id="map"></div>
     </body>
-</body>
 
 </html>
