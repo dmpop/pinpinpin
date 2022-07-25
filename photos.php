@@ -34,7 +34,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <link rel="shortcut icon" href="favicon.png" />
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <script src="leaflet/leaflet.js"></script>
-    <script src="leaflet/gpx.js"></script>
+
     <style>
         html,
         body,
@@ -123,7 +123,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                     echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
                     echo  'icon: posPin';
                     echo "}).addTo(map)";
-                    echo ".bindPopup('<img src=\"" . $file . "\" width=100px />');";
+                    echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"" . $file . "\" width=200px /></a>');";
                 }
                 ?>
                 L.control.layers(background, overlays).addTo(map);
