@@ -1,14 +1,13 @@
 <?php
-$gpxDir = "gpx";
+$photoDir = "photos";
 
-// Create $gpxDir if it doesn't exist
-if (!file_exists($gpxDir)) {
-    mkdir($gpxDir, 0755, true);
+// Create $photoDir if it doesn't exist
+if (!file_exists($photoDir)) {
+    mkdir($photoDir, 0755, true);
 }
-
-// Check if the $gpxDir is empty
-if (count(glob($gpxDir . DIRECTORY_SEPARATOR . '*')) === 0) {
-    exit("<center><code style='color: red;'>No GPX files found.</code></center>");
+// Check if the $photoDir is empty
+if (count(glob($photoDir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE)) === 0) {
+    exit("<center><code style='color: red;'>No photos found.</code></center>");
 };
 ?>
 
@@ -35,9 +34,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <link rel="shortcut icon" href="favicon.png" />
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <script src="leaflet/leaflet.js"></script>
-    <script src="leaflet/gpx.js"></script>
-    <link rel="stylesheet" href="leaflet/L.Control.Locate.min.css" />
-    <script src="leaflet/L.Control.Locate.min.js" charset="utf-8"></script>
+
     <style>
         html,
         body,
@@ -49,80 +46,90 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     </style>
 </head>
 
-<body onload="init()">
+<body>
 
     <?php
-    $files = scandir($gpxDir, SCANDIR_SORT_DESCENDING);
-    $gpxFile = $gpxDir . DIRECTORY_SEPARATOR .  $files[0];
+
+    function read_gps_location($file)
+    {
+        if (is_file($file)) {
+            $info = exif_read_data($file);
+            if (
+                isset($info['GPSLatitude']) && isset($info['GPSLongitude']) &&
+                isset($info['GPSLatitudeRef']) && isset($info['GPSLongitudeRef']) &&
+                in_array($info['GPSLatitudeRef'], array('E', 'W', 'N', 'S')) && in_array($info['GPSLongitudeRef'], array('E', 'W', 'N', 'S'))
+            ) {
+
+                $GPSLatitudeRef     = strtolower(trim($info['GPSLatitudeRef']));
+                $GPSLongitudeRef = strtolower(trim($info['GPSLongitudeRef']));
+
+                $lat_degrees_a = explode('/', $info['GPSLatitude'][0]);
+                $lat_minutes_a = explode('/', $info['GPSLatitude'][1]);
+                $lat_seconds_a = explode('/', $info['GPSLatitude'][2]);
+                $lon_degrees_a = explode('/', $info['GPSLongitude'][0]);
+                $lon_minutes_a = explode('/', $info['GPSLongitude'][1]);
+                $lon_seconds_a = explode('/', $info['GPSLongitude'][2]);
+
+                $lat_degrees = $lat_degrees_a[0] / $lat_degrees_a[1];
+                $lat_minutes = $lat_minutes_a[0] / $lat_minutes_a[1];
+                $lat_seconds = $lat_seconds_a[0] / $lat_seconds_a[1];
+                $lon_degrees = $lon_degrees_a[0] / $lon_degrees_a[1];
+                $lon_minutes = $lon_minutes_a[0] / $lon_minutes_a[1];
+                $lon_seconds = $lon_seconds_a[0] / $lon_seconds_a[1];
+
+                $lat = (float) $lat_degrees + ((($lat_minutes * 60) + ($lat_seconds)) / 3600);
+                $lon = (float) $lon_degrees + ((($lon_minutes * 60) + ($lon_seconds)) / 3600);
+
+                // If the latitude is South, make it negative
+                // If the longitude is west, make it negative
+                $GPSLatitudeRef     == 's' ? $lat *= -1 : '';
+                $GPSLongitudeRef == 'w' ? $lon *= -1 : '';
+
+                return array(
+                    'lat' => $lat,
+                    'lon' => $lon
+                );
+            }
+        }
+        return false;
+    }
     ?>
 
-    <div style="text-align: center;">
-        <code>
-            This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: <?php echo $files[0] ?><span style='float: right; margin-right: 1em;'><a href='photos.php'><img style='vertical-align:middle;' src='svg/image.svg' height=18 /></a></span>
-        </code>
-    </div>
+    <body onload="init()">
+        <div style="text-align: center;">
+            <code>
+                This is <a href='https://github.com/dmpop/ifti'>Ifti</a><span style='float: right; margin-right: 1em;'><a href='gpx.php'><img style='vertical-align:middle;' src='svg/pin-location.svg' height=18 /></a></span>
+            </code>
+        </div>
+        <script type="text/javascript">
+            var init = function() {
 
-    <script type="text/javascript">
-        var init = function() {
+                var map = L.map('map').setView([0, 0], 2);
+                L.tileLayer(
+                    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+                        maxZoom: 18,
+                    }).addTo(map);
 
-            var map = L.map('map').setView([11.206051, 122.447886], 8);
-            L.tileLayer(
-                'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-                    maxZoom: 18,
-                }).addTo(map);
+                var posPin = L.icon({
+                    iconUrl: 'pin-icon-pos.png'
+                });
 
-            // Define the GPX layer
-            var pathGpxTrack = '<?php echo $gpxFile; ?>'
-            markerOptions = {
-                startIconUrl: 'pin-icon-start.png',
-                endIconUrl: 'pin-icon-end.png',
-                shadowUrl: 'pin-shadow.png',
-            };
-
-            // Add track to the map
-            var gpxTrack = new L.GPX(
-                '<?php echo $gpxFile; ?>', {
-                    async: true,
-                    max_point_interval: 120000,
-                    polyline_options: {
-                        color: '#005ce6'
-                    },
+                // Add markers with popups
+                <?php
+                $photos = glob($photoDir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE);
+                foreach ($photos as $file) {
+                    $gps = read_gps_location($file);
+                    echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
+                    echo  'icon: posPin';
+                    echo "}).addTo(map)";
+                    echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"" . $file . "\" width=200px /></a>');";
                 }
-            );
-            // Add the GPX layer to the map
-            gpxTrack.addTo(map);
-
-            var wptPin = L.icon({
-                iconUrl: 'pin-icon-wpt.png'
-            });
-
-            // Register popups on click
-            // Set initial zoom
-            gpxTrack.on('loaded', function(e) {
-                var gpx = e.target,
-                    distM = gpx.get_distance(),
-                    distKm = distM / 1000,
-                    distKmRnd = distKm.toFixed(1),
-                    speedKmh = gpx.get_moving_speed(),
-                    speedKmhRnd = speedKmh.toFixed(1);
-
-                gpx.getLayers()[0].bindPopup(
-                    "Total distance: " + distKmRnd + " km</br>" +
-                    "Average speed: " + speedKmhRnd + " km/h"
-                );
-                // Zoom to the GPX track
-                map.fitBounds(gpx.getBounds());
-            });
-            L.control.locate({
-                strings: {
-                    title: "My current position"
-                }
-            }).addTo(map);
-            L.control.layers(background, overlays).addTo(map);
-        }
-    </script>
-    <div id="map"></div>
-</body>
+                ?>
+                L.control.layers(background, overlays).addTo(map);
+            }
+        </script>
+        <div id="map"></div>
+    </body>
 
 </html>
