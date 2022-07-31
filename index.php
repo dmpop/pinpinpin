@@ -8,6 +8,8 @@ if (!file_exists($photoDir)) {
 // Check if the $photoDir is empty
 if (count(glob($photoDir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE)) === 0) {
     exit("<center><code style='color: red;'>No photos found.</code></center>");
+} else {
+    $totalCount = count(glob($photoDir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE));
 };
 ?>
 
@@ -34,6 +36,8 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <link rel="shortcut icon" href="favicon.png" />
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <script src="leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="leaflet/L.Control.Locate.min.css" />
+    <script src="leaflet/L.Control.Locate.min.js" charset="utf-8"></script>
 
     <style>
         html,
@@ -98,7 +102,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <body onload="init()">
         <div style="text-align: center;">
             <code>
-                This is <a href='https://github.com/dmpop/ifti'>Ifti</a><span style='float: right; margin-right: 1em;'><a href='gpx.php'><img style='vertical-align:middle;' src='svg/pin-location.svg' height=18 /></a></span>
+                This is <a href='https://github.com/dmpop/ifti'>Ifti</a><span style='float: right; margin-right: 1em;'>Photos: <?php echo $totalCount; ?></span>
             </code>
         </div>
         <script type="text/javascript">
@@ -108,7 +112,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                 L.tileLayer(
                     'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-                        maxZoom: 18,
+                        maxZoom: 19,
                     }).addTo(map);
 
                 var posPin = L.icon({
@@ -126,6 +130,11 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                     echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"" . $file . "\" width=200px /></a>');";
                 }
                 ?>
+                L.control.locate({
+                    strings: {
+                        title: "My current position"
+                    }
+                }).addTo(map);
                 L.control.layers(background, overlays).addTo(map);
             }
         </script>
