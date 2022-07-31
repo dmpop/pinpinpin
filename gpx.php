@@ -17,7 +17,7 @@ if (count(glob($gpxDir . DIRECTORY_SEPARATOR . '*')) === 0) {
 <!--
 Author: Dmitri Popov
 License: GPLv3 https://www.gnu.org/licenses/gpl-3.0.txt
-Source code: https://github.com/dmpop/ifti
+Source code: https://github.com/dmpop/pinpinpin
 
 Useful resources:
 https://github.com/mpetazzoni/leaflet-gpx
@@ -29,7 +29,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
 <html>
 
 <head>
-    <title>Ifti</title>
+    <title>PinPinPin</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="favicon.png" />
@@ -58,7 +58,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
 
     <div style="text-align: center;">
         <code>
-            This is <a href='https://github.com/dmpop/ifti'>Ifti</a>. GPX file: <?php echo $files[0] ?><span style='float: right; margin-right: 1em;'><a href='index.php'><img style='vertical-align:middle;' src='svg/image.svg' height=18 /></a></span>
+            This is <a href='https://github.com/dmpop/pinpinpin'>PinPinPin</a>. GPX file: <?php echo $files[0] ?><span style='float: right; margin-right: 1em;'><a href='index.php'><img style='vertical-align:middle;' src='svg/image.svg' height=18 /></a></span>
         </code>
     </div>
 

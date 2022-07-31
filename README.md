@@ -1,6 +1,6 @@
-# Ifti
+# PinPinPin
 
-A quick-and-dirty PHP application to view GPX tracks on the map.
+A quick-and-dirty PHP application to show geotagged photos on the OpenStreetMap map.
 
 ## Author
 
