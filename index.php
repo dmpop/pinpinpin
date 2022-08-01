@@ -1,15 +1,16 @@
 <?php
 $photoDir = "photos";
+$ext = "jpeg,JPEG";
 
 // Create $photoDir if it doesn't exist
 if (!file_exists($photoDir)) {
     mkdir($photoDir, 0755, true);
 }
 // Check if the $photoDir is empty
-if (count(glob($photoDir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE)) === 0) {
+if (count(glob($photoDir . DIRECTORY_SEPARATOR . '*.{' . $ext . '}', GLOB_BRACE)) === 0) {
     exit("<center><code style='color: red;'>No photos found.</code></center>");
 } else {
-    $totalCount = count(glob($photoDir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE));
+    $totalCount = count(glob($photoDir . DIRECTORY_SEPARATOR . '*.{' . $ext . '}', GLOB_BRACE));
 };
 ?>
 
@@ -102,7 +103,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <body onload="init()">
         <div style="text-align: center;">
             <code>
-                This is <a href='https://github.com/dmpop/pinpinpin'>PinPinPin</a><span style='float: right; margin-right: 1em;'>Photos: <?php echo $totalCount; ?></span>
+                This is <a href='https://github.com/dmpop/pinpinpin'>PinPinPin</a> Photos: <?php echo $totalCount; ?>
             </code>
         </div>
         <script type="text/javascript">
@@ -121,7 +122,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
 
                 // Add markers with popups
                 <?php
-                $photos = glob($photoDir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,JPG,JPEG}', GLOB_BRACE);
+                $photos = glob($photoDir . DIRECTORY_SEPARATOR . '*.{' . $ext . '}', GLOB_BRACE);
                 foreach ($photos as $file) {
                     $gps = read_gps_location($file);
                     echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
