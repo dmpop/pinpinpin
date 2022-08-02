@@ -49,7 +49,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
         body,
         #map {
             margin: 0;
-            height: 99%;
+            height: 100%;
             width: 100%;
         }
     </style>
@@ -105,11 +105,6 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     ?>
 
     <body onload="init()">
-        <div style="text-align: center;">
-            <code>
-                This is <a href='https://github.com/dmpop/pinpinpin'>PinPinPin</a> Photos: <?php echo $totalCount; ?>
-            </code>
-        </div>
         <script type="text/javascript">
             var init = function() {
                 <?php
@@ -118,7 +113,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                 var map = L.map('map').setView([<?php echo $initCoord['lat']; ?>, <?php echo $initCoord['lon']; ?>], 8);
                 L.tileLayer(
                     'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+                        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. Photos: <?php echo $totalCount; ?>',
                         maxZoom: 19,
                     }).addTo(map);
 
@@ -133,7 +128,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                     echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
                     echo  'icon: posPin';
                     echo "}).addTo(map)";
-                    echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"" . $file . "\" width=200px /></a>');";
+                    echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"" . $file . "\" width=300px /></a>');";
                 }
                 ?>
                 L.control.locate({
