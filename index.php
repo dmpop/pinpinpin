@@ -9,6 +9,10 @@ if (!file_exists($photoDir)) {
 // Check if the $photoDir is empty
 $photos = glob($photoDir . DIRECTORY_SEPARATOR . '*.{' . $ext . '}', GLOB_BRACE);
 $totalCount = count($photos);
+// Find the most recent photo to center the map on
+// $totalCount-1 because arrays start with 0
+$initPhoto = $photos[$totalCount - 1];
+
 if ($totalCount === 0) {
     exit("<center><code style='color: red;'>No photos found.</code></center>");
 };
@@ -108,8 +112,10 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
         </div>
         <script type="text/javascript">
             var init = function() {
-
-                var map = L.map('map').setView([0, 0], 2);
+                <?php
+                $initCoord = read_gps_location($initPhoto);
+                ?>
+                var map = L.map('map').setView([<?php echo $initCoord['lat']; ?>, <?php echo $initCoord['lon']; ?>], 8);
                 L.tileLayer(
                     'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
