@@ -1,18 +1,30 @@
 # PinPinPin
 
-A quick-and-dirty PHP application to show geotagged photos on the OpenStreetMap map.
+A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to show geotagged photos on the OpenStreetMap map.
 
-# Requirements
+# Prerequisites
 
-- Web server (tested with Apache)
-- PHP 7.x or higher
+A web server like Apache and PHP 7.x or higher.
+
+# Limitations
+
+- If multiple photos have the exact same geographical coordinates, only the most recent is shown on the map.
+- PinPinPin doesn't create thumbnail images for previews. So whenever you preview a photo on a map, the application downloads the full-resolution image. Yo're advised to reduce the size of photos before adding then to PinPinPin.
 
 # Installation
 
 1. Fetch the latest code using Git with the `https://github.com/dmpop/pinpinpin.git` command. Alternatively, download the code as a ZIP archive from the project's [GitHub repository](https://github.com/dmpop/pinpinpin).
-2. In the resulting _pinpinpin_ directory, open the _index.php_ file for editing. Specify the correct path to the directory containing photos (the `$photo_dir` variable) and the desired file extensions (the `$ext` variable). Save the changes. This step is optional.
+2. In the resulting _pinpinpin_ directory, open the _index.php_ file for editing. Specify the correct path to the directory containing photos (the `$photoDir` variable) and the desired file extensions (the `$ext` variable). Save the changes. This step is optional.
 3. Move the resulting _pinpinpin_ directory to the document root of the web server.
 4. Put photos into the specified photo directory.
+
+# Using PinPinPin
+
+- The map automatically centers on the most recent photo.
+- Click on a marker to see a photo preview in a popup.
+- Click on the preview image to open the full-resolution original in a new browser window.
+- Use **+** and **-** buttons or the mouse to zoom in and out.
+- Use **My current position** button to see you current location on the map.
 
 ## Problems?
 
