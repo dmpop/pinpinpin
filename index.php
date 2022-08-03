@@ -128,7 +128,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                     echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
                     echo  'icon: posPin';
                     echo "}).addTo(map)";
-                    echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"" . $file . "\" width=300px /></a>');";
+                    echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $file . "\" width=300px /></a>');";
                 }
                 ?>
                 L.control.locate({

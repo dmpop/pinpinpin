@@ -4,12 +4,13 @@ A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to 
 
 # Prerequisites
 
-A web server like Apache and PHP 7.x or higher.
+- Web server (tested with Apache)
+- PHP 7.x or higher
+- PHP GD library
 
 # Limitations
 
-- If multiple photos have the exact same geographical coordinates, only the most recent is shown on the map.
-- PinPinPin doesn't create thumbnail images for previews. So whenever you preview a photo on a map, the application downloads the full-resolution image. Yo're advised to reduce the size of photos before adding then to PinPinPin.
+- If multiple photos have the exact same geographical coordinates, only the most recent photo is shown on the map.
 
 # Installation
 
