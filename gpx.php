@@ -43,7 +43,7 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
         body,
         #map {
             margin: 0;
-            height: 99%;
+            height: 100%;
             width: 100%;
         }
     </style>
@@ -56,19 +56,13 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     $gpxFile = $gpxDir . DIRECTORY_SEPARATOR .  $files[0];
     ?>
 
-    <div style="text-align: center;">
-        <code>
-            This is <a href='https://github.com/dmpop/pinpinpin'>PinPinPin</a>. GPX file: <?php echo $files[0] ?><span style='float: right; margin-right: 1em;'><a href='index.php'><img style='vertical-align:middle;' src='svg/image.svg' height=18 /></a></span>
-        </code>
-    </div>
-
     <script type="text/javascript">
         var init = function() {
 
             var map = L.map('map').setView([11.206051, 122.447886], 8);
             L.tileLayer(
                 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+                    attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. GPX file: <?php echo $files[0] ?>',
                     maxZoom: 18,
                 }).addTo(map);
 
