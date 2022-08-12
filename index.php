@@ -121,6 +121,10 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                     iconUrl: 'pin-icon-pos.png'
                 });
 
+                var endPin = L.icon({
+                    iconUrl: 'pin-icon-end.png'
+                });
+
                 // Add markers with popups
                 <?php
                 foreach ($photos as $file) {
@@ -130,6 +134,11 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                     echo "}).addTo(map)";
                     echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $file . "\" width=300px /></a>');";
                 }
+                // Use the endPin marker for the most recent photo
+                echo "L.marker([" . $initCoord['lat'] . ", " . $initCoord['lon'] . "], {";
+                echo  'icon: endPin';
+                echo "}).addTo(map)";
+                echo ".bindPopup('<a href=\"" . $initPhoto . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $initPhoto . "\" width=300px /></a>');";
                 ?>
                 L.control.locate({
                     strings: {
