@@ -129,16 +129,22 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                 <?php
                 foreach ($photos as $file) {
                     $gps = read_gps_location($file);
+                    $exif = exif_read_data($file, 0, true);
+                    if (empty($exif['COMMENT']['0'])) {
+                        $caption = "";
+                    } else {
+                        $caption = $exif['COMMENT']['0'];
+                    }
                     echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
                     echo  'icon: posPin';
                     echo "}).addTo(map)";
-                    echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $file . "\" width=300px /></a>');";
+                    echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
                 }
                 // Use the endPin marker for the most recent photo
                 echo "L.marker([" . $initCoord['lat'] . ", " . $initCoord['lon'] . "], {";
                 echo  'icon: endPin';
                 echo "}).addTo(map)";
-                echo ".bindPopup('<a href=\"" . $initPhoto . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $initPhoto . "\" width=300px /></a>');";
+                echo ".bindPopup('<a href=\"" . $initPhoto . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $initPhoto . "\" width=300px /></a>" . $caption . "');";
                 ?>
                 L.control.locate({
                     strings: {

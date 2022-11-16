@@ -6,7 +6,7 @@ A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to 
 
 - Web server (tested with Apache)
 - PHP 7.x or higher
-- PHP GD library
+- PHP-GD and PHP-EXIF modules
 
 # Limitations
 
@@ -26,6 +26,10 @@ A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to 
 - Click on the preview image to open the full-resolution original in a new browser window.
 - Use **+** and **-** buttons or the mouse to zoom in and out.
 - Use **My current position** button to see you current location on the map.
+
+The [Linux Photography](https://gumroad.com/l/linux-photography) book provides detailed instructions on installing and using Otto. Get your copy at [Google Play Store](https://play.google.com/store/books/details/Dmitri_Popov_Linux_Photography?id=cO70CwAAQBAJ) or [Gumroad](https://gumroad.com/l/linux-photography).
+
+<img src="https://tokyoma.de/bookcovers/linux-photography.jpg" title="Linux Photography book" width="200"/>
 
 ## Problems?
 
