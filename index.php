@@ -130,11 +130,37 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
                 foreach ($photos as $file) {
                     $gps = read_gps_location($file);
                     $exif = exif_read_data($file, 0, true);
-                    if (empty($exif['COMMENT']['0'])) {
-                        $caption = "";
+                    $model = $exif['IFD0']['Model'];
+                    if (empty($model)) {
+                        $model = "";
                     } else {
-                        $caption = $exif['COMMENT']['0'];
+                        $model = $model . ", ";
                     }
+                    $lens = $exif["EXIF"]["UndefinedTag:0xA434"];
+                    if (empty($lens)) {
+                        $lens = "";
+                    } else {
+                        $lens = $lens . ", ";
+                    }
+                    $aperture = $exif['COMPUTED']['ApertureFNumber'];
+                    if (empty($aperture)) {
+                        $aperture = "";
+                    } else {
+                        $aperture = "Aperture: <strong>" . $aperture . "</strong> ";
+                    }
+                    $exposure = $exif['EXIF']['ExposureTime'];
+                    if (empty($exposure)) {
+                        $exposure = "";
+                    } else {
+                        $exposure = "Shutter speed: <strong>" . $exposure . "</strong>, ";
+                    }
+                    $iso = $exif['EXIF']['ISOSpeedRatings'];
+                    if (empty($iso)) {
+                        $iso = "";
+                    } else {
+                        $iso = "ISO: <strong>" . $iso . "</strong>";
+                    }
+                    $caption = $model . $lens . $aperture . $exposure . $iso;
                     echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
                     echo  'icon: posPin';
                     echo "}).addTo(map)";
