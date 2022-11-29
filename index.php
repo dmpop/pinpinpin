@@ -55,132 +55,130 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     </style>
 </head>
 
-<body>
+<?php
 
-    <?php
+function read_gps_location($file)
+{
+    if (is_file($file)) {
+        $info = exif_read_data($file);
+        if (
+            isset($info['GPSLatitude']) && isset($info['GPSLongitude']) &&
+            isset($info['GPSLatitudeRef']) && isset($info['GPSLongitudeRef']) &&
+            in_array($info['GPSLatitudeRef'], array('E', 'W', 'N', 'S')) && in_array($info['GPSLongitudeRef'], array('E', 'W', 'N', 'S'))
+        ) {
 
-    function read_gps_location($file)
-    {
-        if (is_file($file)) {
-            $info = exif_read_data($file);
-            if (
-                isset($info['GPSLatitude']) && isset($info['GPSLongitude']) &&
-                isset($info['GPSLatitudeRef']) && isset($info['GPSLongitudeRef']) &&
-                in_array($info['GPSLatitudeRef'], array('E', 'W', 'N', 'S')) && in_array($info['GPSLongitudeRef'], array('E', 'W', 'N', 'S'))
-            ) {
+            $GPSLatitudeRef     = strtolower(trim($info['GPSLatitudeRef']));
+            $GPSLongitudeRef = strtolower(trim($info['GPSLongitudeRef']));
 
-                $GPSLatitudeRef     = strtolower(trim($info['GPSLatitudeRef']));
-                $GPSLongitudeRef = strtolower(trim($info['GPSLongitudeRef']));
+            $lat_degrees_a = explode('/', $info['GPSLatitude'][0]);
+            $lat_minutes_a = explode('/', $info['GPSLatitude'][1]);
+            $lat_seconds_a = explode('/', $info['GPSLatitude'][2]);
+            $lon_degrees_a = explode('/', $info['GPSLongitude'][0]);
+            $lon_minutes_a = explode('/', $info['GPSLongitude'][1]);
+            $lon_seconds_a = explode('/', $info['GPSLongitude'][2]);
 
-                $lat_degrees_a = explode('/', $info['GPSLatitude'][0]);
-                $lat_minutes_a = explode('/', $info['GPSLatitude'][1]);
-                $lat_seconds_a = explode('/', $info['GPSLatitude'][2]);
-                $lon_degrees_a = explode('/', $info['GPSLongitude'][0]);
-                $lon_minutes_a = explode('/', $info['GPSLongitude'][1]);
-                $lon_seconds_a = explode('/', $info['GPSLongitude'][2]);
+            $lat_degrees = $lat_degrees_a[0] / $lat_degrees_a[1];
+            $lat_minutes = $lat_minutes_a[0] / $lat_minutes_a[1];
+            $lat_seconds = $lat_seconds_a[0] / $lat_seconds_a[1];
+            $lon_degrees = $lon_degrees_a[0] / $lon_degrees_a[1];
+            $lon_minutes = $lon_minutes_a[0] / $lon_minutes_a[1];
+            $lon_seconds = $lon_seconds_a[0] / $lon_seconds_a[1];
 
-                $lat_degrees = $lat_degrees_a[0] / $lat_degrees_a[1];
-                $lat_minutes = $lat_minutes_a[0] / $lat_minutes_a[1];
-                $lat_seconds = $lat_seconds_a[0] / $lat_seconds_a[1];
-                $lon_degrees = $lon_degrees_a[0] / $lon_degrees_a[1];
-                $lon_minutes = $lon_minutes_a[0] / $lon_minutes_a[1];
-                $lon_seconds = $lon_seconds_a[0] / $lon_seconds_a[1];
+            $lat = (float) $lat_degrees + ((($lat_minutes * 60) + ($lat_seconds)) / 3600);
+            $lon = (float) $lon_degrees + ((($lon_minutes * 60) + ($lon_seconds)) / 3600);
 
-                $lat = (float) $lat_degrees + ((($lat_minutes * 60) + ($lat_seconds)) / 3600);
-                $lon = (float) $lon_degrees + ((($lon_minutes * 60) + ($lon_seconds)) / 3600);
+            // If the latitude is South, make it negative
+            // If the longitude is west, make it negative
+            $GPSLatitudeRef     == 's' ? $lat *= -1 : '';
+            $GPSLongitudeRef == 'w' ? $lon *= -1 : '';
 
-                // If the latitude is South, make it negative
-                // If the longitude is west, make it negative
-                $GPSLatitudeRef     == 's' ? $lat *= -1 : '';
-                $GPSLongitudeRef == 'w' ? $lon *= -1 : '';
-
-                return array(
-                    'lat' => $lat,
-                    'lon' => $lon
-                );
-            }
+            return array(
+                'lat' => $lat,
+                'lon' => $lon
+            );
         }
-        return false;
     }
-    ?>
+    return false;
+}
+?>
 
-    <body onload="init()">
-        <script type="text/javascript">
-            var init = function() {
-                <?php
-                $initCoord = read_gps_location($initPhoto);
-                ?>
-                var map = L.map('map').setView([<?php echo $initCoord['lat']; ?>, <?php echo $initCoord['lon']; ?>], 8);
-                L.tileLayer(
-                    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. Photos: <?php echo $totalCount; ?>',
-                        maxZoom: 19,
-                    }).addTo(map);
-
-                var posPin = L.icon({
-                    iconUrl: 'pin-icon-pos.png'
-                });
-
-                var endPin = L.icon({
-                    iconUrl: 'pin-icon-end.png'
-                });
-
-                // Add markers with popups
-                <?php
-                foreach ($photos as $file) {
-                    $gps = read_gps_location($file);
-                    $exif = exif_read_data($file, 0, true);
-                    $model = $exif['IFD0']['Model'];
-                    if (empty($model)) {
-                        $model = "";
-                    } else {
-                        $model = $model . ", ";
-                    }
-                    $lens = $exif["EXIF"]["UndefinedTag:0xA434"];
-                    if (empty($lens)) {
-                        $lens = "";
-                    } else {
-                        $lens = $lens . ", ";
-                    }
-                    $aperture = $exif['COMPUTED']['ApertureFNumber'];
-                    if (empty($aperture)) {
-                        $aperture = "";
-                    } else {
-                        $aperture = "Aperture: <strong>" . $aperture . "</strong> ";
-                    }
-                    $exposure = $exif['EXIF']['ExposureTime'];
-                    if (empty($exposure)) {
-                        $exposure = "";
-                    } else {
-                        $exposure = "Shutter speed: <strong>" . $exposure . "</strong>, ";
-                    }
-                    $iso = $exif['EXIF']['ISOSpeedRatings'];
-                    if (empty($iso)) {
-                        $iso = "";
-                    } else {
-                        $iso = "ISO: <strong>" . $iso . "</strong>";
-                    }
-                    $caption = $model . $lens . $aperture . $exposure . $iso;
-                    echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
-                    echo  'icon: posPin';
-                    echo "}).addTo(map)";
-                    echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
-                }
-                // Use the endPin marker for the most recent photo
-                echo "L.marker([" . $initCoord['lat'] . ", " . $initCoord['lon'] . "], {";
-                echo  'icon: endPin';
-                echo "}).addTo(map)";
-                echo ".bindPopup('<a href=\"" . $initPhoto . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $initPhoto . "\" width=300px /></a>" . $caption . "');";
-                ?>
-                L.control.locate({
-                    strings: {
-                        title: "My current position"
-                    }
+<body onload="init()">
+    <script type="text/javascript">
+        var init = function() {
+            <?php
+            $initCoord = read_gps_location($initPhoto);
+            ?>
+            var map = L.map('map').setView([<?php echo $initCoord['lat']; ?>, <?php echo $initCoord['lon']; ?>], 8);
+            L.tileLayer(
+                'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. Photos: <?php echo $totalCount; ?>',
+                    maxZoom: 19,
                 }).addTo(map);
-                L.control.layers(background, overlays).addTo(map);
+
+            var posPin = L.icon({
+                iconUrl: 'pin-icon-pos.png'
+            });
+
+            var endPin = L.icon({
+                iconUrl: 'pin-icon-end.png'
+            });
+
+            // Add markers with popups
+            <?php
+            foreach ($photos as $file) {
+                $gps = read_gps_location($file);
+                $exif = exif_read_data($file, 0, true);
+                $model = $exif['IFD0']['Model'];
+                if (empty($model)) {
+                    $model = "";
+                } else {
+                    $model = $model . ", ";
+                }
+                $lens = $exif["EXIF"]["UndefinedTag:0xA434"];
+                if (empty($lens)) {
+                    $lens = "";
+                } else {
+                    $lens = $lens . ", ";
+                }
+                $aperture = $exif['COMPUTED']['ApertureFNumber'];
+                if (empty($aperture)) {
+                    $aperture = "";
+                } else {
+                    $aperture = "Aperture: <strong>" . $aperture . "</strong> ";
+                }
+                $exposure = $exif['EXIF']['ExposureTime'];
+                if (empty($exposure)) {
+                    $exposure = "";
+                } else {
+                    $exposure = "Shutter speed: <strong>" . $exposure . "</strong>, ";
+                }
+                $iso = $exif['EXIF']['ISOSpeedRatings'];
+                if (empty($iso)) {
+                    $iso = "";
+                } else {
+                    $iso = "ISO: <strong>" . $iso . "</strong>";
+                }
+                $caption = $model . $lens . $aperture . $exposure . $iso;
+                echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
+                echo  'icon: posPin';
+                echo "}).addTo(map)";
+                echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
             }
-        </script>
-        <div id="map"></div>
-    </body>
+            // Use the endPin marker for the most recent photo
+            echo "L.marker([" . $initCoord['lat'] . ", " . $initCoord['lon'] . "], {";
+            echo  'icon: endPin';
+            echo "}).addTo(map)";
+            echo ".bindPopup('<a href=\"" . $initPhoto . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $initPhoto . "\" width=300px /></a>" . $caption . "');";
+            ?>
+            L.control.locate({
+                strings: {
+                    title: "My current position"
+                }
+            }).addTo(map);
+            L.control.layers(background, overlays).addTo(map);
+        }
+    </script>
+    <div id="map"></div>
+</body>
 
 </html>
