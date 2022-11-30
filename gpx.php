@@ -49,73 +49,73 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     </style>
 </head>
 
-<body onload="init()">
+<?php
+$files = scandir($gpxDir, SCANDIR_SORT_DESCENDING);
+$gpxFile = $gpxDir . DIRECTORY_SEPARATOR .  $files[0];
+?>
 
-    <?php
-    $files = scandir($gpxDir, SCANDIR_SORT_DESCENDING);
-    $gpxFile = $gpxDir . DIRECTORY_SEPARATOR .  $files[0];
-    ?>
+<script type="text/javascript">
+    var init = function() {
 
-    <script type="text/javascript">
-        var init = function() {
-
-            var map = L.map('map').setView([11.206051, 122.447886], 8);
-            L.tileLayer(
-                'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. GPX file: <?php echo $files[0] ?>',
-                    maxZoom: 18,
-                }).addTo(map);
-
-            // Define the GPX layer
-            var pathGpxTrack = '<?php echo $gpxFile; ?>'
-            markerOptions = {
-                startIconUrl: 'pin-icon-start.png',
-                endIconUrl: 'pin-icon-end.png',
-                shadowUrl: 'pin-shadow.png',
-            };
-
-            // Add track to the map
-            var gpxTrack = new L.GPX(
-                '<?php echo $gpxFile; ?>', {
-                    async: true,
-                    max_point_interval: 120000,
-                    polyline_options: {
-                        color: '#005ce6'
-                    },
-                }
-            );
-            // Add the GPX layer to the map
-            gpxTrack.addTo(map);
-
-            var wptPin = L.icon({
-                iconUrl: 'pin-icon-wpt.png'
-            });
-
-            // Register popups on click
-            // Set initial zoom
-            gpxTrack.on('loaded', function(e) {
-                var gpx = e.target,
-                    distM = gpx.get_distance(),
-                    distKm = distM / 1000,
-                    distKmRnd = distKm.toFixed(1),
-                    speedKmh = gpx.get_moving_speed(),
-                    speedKmhRnd = speedKmh.toFixed(1);
-
-                gpx.getLayers()[0].bindPopup(
-                    "Total distance: " + distKmRnd + " km</br>" +
-                    "Average speed: " + speedKmhRnd + " km/h"
-                );
-                // Zoom to the GPX track
-                map.fitBounds(gpx.getBounds());
-            });
-            L.control.locate({
-                strings: {
-                    title: "My current position"
-                }
+        var map = L.map('map').setView([11.206051, 122.447886], 8);
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. GPX file: <?php echo $files[0] ?>',
+                maxZoom: 18,
             }).addTo(map);
-            L.control.layers(background, overlays).addTo(map);
-        }
-    </script>
+
+        // Define the GPX layer
+        var pathGpxTrack = '<?php echo $gpxFile; ?>'
+        markerOptions = {
+            startIconUrl: 'pin-icon-start.png',
+            endIconUrl: 'pin-icon-end.png',
+            shadowUrl: 'pin-shadow.png',
+        };
+
+        // Add track to the map
+        var gpxTrack = new L.GPX(
+            '<?php echo $gpxFile; ?>', {
+                async: true,
+                max_point_interval: 120000,
+                polyline_options: {
+                    color: '#005ce6'
+                },
+            }
+        );
+        // Add the GPX layer to the map
+        gpxTrack.addTo(map);
+
+        var wptPin = L.icon({
+            iconUrl: 'pin-icon-wpt.png'
+        });
+
+        // Register popups on click
+        // Set initial zoom
+        gpxTrack.on('loaded', function(e) {
+            var gpx = e.target,
+                distM = gpx.get_distance(),
+                distKm = distM / 1000,
+                distKmRnd = distKm.toFixed(1),
+                speedKmh = gpx.get_moving_speed(),
+                speedKmhRnd = speedKmh.toFixed(1);
+
+            gpx.getLayers()[0].bindPopup(
+                "Total distance: " + distKmRnd + " km</br>" +
+                "Average speed: " + speedKmhRnd + " km/h"
+            );
+            // Zoom to the GPX track
+            map.fitBounds(gpx.getBounds());
+        });
+        L.control.locate({
+            strings: {
+                title: "My current position"
+            }
+        }).addTo(map);
+        L.control.layers(background, overlays).addTo(map);
+    }
+</script>
+
+<body onload="init()">
     <div id="map"></div>
     <!-- <div style="text-align: center;">
         <code>

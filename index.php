@@ -102,82 +102,83 @@ function read_gps_location($file)
 }
 ?>
 
-<body onload="init()">
-    <script type="text/javascript">
-        var init = function() {
-            <?php
-            $initCoord = read_gps_location($initPhoto);
-            ?>
-            var map = L.map('map').setView([<?php echo $initCoord['lat']; ?>, <?php echo $initCoord['lon']; ?>], 8);
-            L.tileLayer(
-                'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. Photos: <?php echo $totalCount; ?>',
-                    maxZoom: 19,
-                }).addTo(map);
-
-            var posPin = L.icon({
-                iconUrl: 'pin-icon-pos.png'
-            });
-
-            var endPin = L.icon({
-                iconUrl: 'pin-icon-end.png'
-            });
-
-            // Add markers with popups
-            <?php
-            foreach ($photos as $file) {
-                $gps = read_gps_location($file);
-                $exif = exif_read_data($file, 0, true);
-                $model = $exif['IFD0']['Model'];
-                if (empty($model)) {
-                    $model = "";
-                } else {
-                    $model = $model . ", ";
-                }
-                $lens = $exif["EXIF"]["UndefinedTag:0xA434"];
-                if (empty($lens)) {
-                    $lens = "";
-                } else {
-                    $lens = $lens . ", ";
-                }
-                $aperture = $exif['COMPUTED']['ApertureFNumber'];
-                if (empty($aperture)) {
-                    $aperture = "";
-                } else {
-                    $aperture = "Aperture: <strong>" . $aperture . "</strong> ";
-                }
-                $exposure = $exif['EXIF']['ExposureTime'];
-                if (empty($exposure)) {
-                    $exposure = "";
-                } else {
-                    $exposure = "Shutter speed: <strong>" . $exposure . "</strong>, ";
-                }
-                $iso = $exif['EXIF']['ISOSpeedRatings'];
-                if (empty($iso)) {
-                    $iso = "";
-                } else {
-                    $iso = "ISO: <strong>" . $iso . "</strong>";
-                }
-                $caption = $model . $lens . $aperture . $exposure . $iso;
-                echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
-                echo  'icon: posPin';
-                echo "}).addTo(map)";
-                echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
-            }
-            // Use the endPin marker for the most recent photo
-            echo "L.marker([" . $initCoord['lat'] . ", " . $initCoord['lon'] . "], {";
-            echo  'icon: endPin';
-            echo "}).addTo(map)";
-            echo ".bindPopup('<a href=\"" . $initPhoto . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $initPhoto . "\" width=300px /></a>" . $caption . "');";
-            ?>
-            L.control.locate({
-                strings: {
-                    title: "My current position"
-                }
+<script type="text/javascript">
+    var init = function() {
+        <?php
+        $initCoord = read_gps_location($initPhoto);
+        ?>
+        var map = L.map('map').setView([<?php echo $initCoord['lat']; ?>, <?php echo $initCoord['lon']; ?>], 8);
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. Photos: <?php echo $totalCount; ?>',
+                maxZoom: 19,
             }).addTo(map);
-            L.control.layers(background, overlays).addTo(map);
+
+        var posPin = L.icon({
+            iconUrl: 'pin-icon-pos.png'
+        });
+
+        var endPin = L.icon({
+            iconUrl: 'pin-icon-end.png'
+        });
+
+        // Add markers with popups
+        <?php
+        foreach ($photos as $file) {
+            $gps = read_gps_location($file);
+            $exif = exif_read_data($file, 0, true);
+            $model = $exif['IFD0']['Model'];
+            if (empty($model)) {
+                $model = "";
+            } else {
+                $model = $model . ", ";
+            }
+            $lens = $exif["EXIF"]["UndefinedTag:0xA434"];
+            if (empty($lens)) {
+                $lens = "";
+            } else {
+                $lens = $lens . ", ";
+            }
+            $aperture = $exif['COMPUTED']['ApertureFNumber'];
+            if (empty($aperture)) {
+                $aperture = "";
+            } else {
+                $aperture = "Aperture: <strong>" . $aperture . "</strong> ";
+            }
+            $exposure = $exif['EXIF']['ExposureTime'];
+            if (empty($exposure)) {
+                $exposure = "";
+            } else {
+                $exposure = "Shutter speed: <strong>" . $exposure . "</strong>, ";
+            }
+            $iso = $exif['EXIF']['ISOSpeedRatings'];
+            if (empty($iso)) {
+                $iso = "";
+            } else {
+                $iso = "ISO: <strong>" . $iso . "</strong>";
+            }
+            $caption = $model . $lens . $aperture . $exposure . $iso;
+            echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
+            echo  'icon: posPin';
+            echo "}).addTo(map)";
+            echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
         }
-    </script>
+        // Use the endPin marker for the most recent photo
+        echo "L.marker([" . $initCoord['lat'] . ", " . $initCoord['lon'] . "], {";
+        echo  'icon: endPin';
+        echo "}).addTo(map)";
+        echo ".bindPopup('<a href=\"" . $initPhoto . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $initPhoto . "\" width=300px /></a>" . $caption . "');";
+        ?>
+        L.control.locate({
+            strings: {
+                title: "My current position"
+            }
+        }).addTo(map);
+        L.control.layers(background, overlays).addTo(map);
+    }
+</script>
+
+<body onload="init()">
     <div id="map"></div>
 </body>
 
