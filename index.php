@@ -133,25 +133,25 @@ function read_gps_location($file)
             } else {
                 $model = $model . ", ";
             }
-            $lens = $exif["EXIF"]["UndefinedTag:0xA434"];
+            $lens = $exif["EXIF"]["UndefinedTag:0xA434"] ?? null;
             if (empty($lens)) {
                 $lens = "";
             } else {
                 $lens = $lens . ", ";
             }
-            $aperture = $exif['COMPUTED']['ApertureFNumber'];
+            $aperture = $exif['COMPUTED']['ApertureFNumber'] ?? null;
             if (empty($aperture)) {
                 $aperture = "";
             } else {
                 $aperture = "Aperture: <strong>" . $aperture . "</strong> ";
             }
-            $exposure = $exif['EXIF']['ExposureTime'];
+            $exposure = $exif['EXIF']['ExposureTime'] ?? null;
             if (empty($exposure)) {
                 $exposure = "";
             } else {
                 $exposure = "Shutter speed: <strong>" . $exposure . "</strong>, ";
             }
-            $iso = $exif['EXIF']['ISOSpeedRatings'];
+            $iso = $exif['EXIF']['ISOSpeedRatings'] ?? null;
             if (empty($iso)) {
                 $iso = "";
             } else {
