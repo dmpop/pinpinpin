@@ -27,7 +27,7 @@ A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to 
 - Use **+** and **-** buttons or the mouse to zoom in and out.
 - Use **My current position** button to see you current location on the map.
 
-The [Linux Photography](https://gumroad.com/l/linux-photography) book provides detailed instructions on installing and using Otto. Get your copy at [Google Play Store](https://play.google.com/store/books/details/Dmitri_Popov_Linux_Photography?id=cO70CwAAQBAJ) or [Gumroad](https://gumroad.com/l/linux-photography).
+The [Linux Photography](https://gumroad.com/l/linux-photography) book provides detailed instructions on installing and using PinPinPin. Get your copy at [Google Play Store](https://play.google.com/store/books/details/Dmitri_Popov_Linux_Photography?id=cO70CwAAQBAJ) or [Gumroad](https://gumroad.com/l/linux-photography).
 
 <img src="https://tokyoma.de/bookcovers/linux-photography.jpg" title="Linux Photography book" width="200"/>
 
