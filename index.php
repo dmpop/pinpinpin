@@ -161,13 +161,13 @@ function read_gps_location($file)
             echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
             echo  'icon: posPin';
             echo "}).addTo(map)";
-            echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
+            echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
         }
         // Use the endPin marker for the most recent photo
         echo "L.marker([" . $initCoord['lat'] . ", " . $initCoord['lon'] . "], {";
         echo  'icon: endPin';
         echo "}).addTo(map)";
-        echo ".bindPopup('<a href=\"" . $initPhoto . "\"  target=\"_blank\"><img src=\"/tim.php?image=" . $initPhoto . "\" width=300px /></a>" . $caption . "');";
+        echo ".bindPopup('<a href=\"" . $initPhoto . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $initPhoto . "\" width=300px /></a>" . $caption . "');";
         ?>
         L.control.locate({
             strings: {
