@@ -117,13 +117,6 @@ $gpxFile = $gpxDir . DIRECTORY_SEPARATOR .  $files[0];
 
 <body onload="init()">
     <div id="map"></div>
-    <!-- <div style="text-align: center;">
-        <code>
-            <form method='POST' action='' style="display: inline-block;">
-            Name: <input type='text' name='name'> Lat: <input type='text' name='lat'> Lon: <input type='text' name='lon'> <input type="submit" name="submit" value="Save">
-            </form>
-        </code>
-    </div> -->
 </body>
 
 </html>
