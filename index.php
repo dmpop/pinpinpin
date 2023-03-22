@@ -126,48 +126,12 @@ function read_gps_location($file)
         <?php
         foreach ($photos as $file) {
             $gps = read_gps_location($file);
-            $exif = exif_read_data($file, 0, true);
-            $model = $exif['IFD0']['Model'];
-            if (empty($model)) {
-                $model = "";
-            } else {
-                $model = $model . ", ";
-            }
-            $lens = $exif["EXIF"]["UndefinedTag:0xA434"] ?? null;
-            if (empty($lens)) {
-                $lens = "";
-            } else {
-                $lens = $lens . ", ";
-            }
-            $aperture = $exif['COMPUTED']['ApertureFNumber'] ?? null;
-            if (empty($aperture)) {
-                $aperture = "";
-            } else {
-                $aperture = "Aperture: <strong>" . $aperture . "</strong> ";
-            }
-            $exposure = $exif['EXIF']['ExposureTime'] ?? null;
-            if (empty($exposure)) {
-                $exposure = "";
-            } else {
-                $exposure = "Shutter speed: <strong>" . $exposure . "</strong>, ";
-            }
-            $iso = $exif['EXIF']['ISOSpeedRatings'] ?? null;
-            if (empty($iso)) {
-                $iso = "";
-            } else {
-                $iso = "ISO: <strong>" . $iso . "</strong>";
-            }
-            $caption = $model . $lens . $aperture . $exposure . $iso;
+            $geoURI = "geo:" . $gps['lat'] . "," . $gps['lon'];
             echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
             echo  'icon: posPin';
             echo "}).addTo(map)";
-            echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
+            echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $file . "\" width=300px /></a><center><a href=\"" . $geoURI . "\">" . $geoURI . "</a></center>');";
         }
-        // Use the endPin marker for the most recent photo
-        echo "L.marker([" . $initCoord['lat'] . ", " . $initCoord['lon'] . "], {";
-        echo  'icon: endPin';
-        echo "}).addTo(map)";
-        echo ".bindPopup('<a href=\"" . $initPhoto . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $initPhoto . "\" width=300px /></a>" . $caption . "');";
         ?>
         L.control.locate({
             strings: {
