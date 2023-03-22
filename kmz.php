@@ -75,6 +75,12 @@ $kmzFiles = scandir($kmzDir, SCANDIR_SORT_DESCENDING);
             $i++;
         }
         ?>
+        L.control.locate({
+            strings: {
+                title: "My current position"
+            }
+        }).addTo(map);
+        L.control.layers(background, overlays).addTo(map);
     }
 </script>
 
