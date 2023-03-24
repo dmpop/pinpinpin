@@ -2,18 +2,23 @@
 $photoDir = "photos";
 $ext = "jpeg,JPEG";
 
+// Check whether the php-exif library is installed
+if (!extension_loaded('exif')) {
+    exit("<center><code style='color: red;'>php-exif is not installed</code></center>");
+}
+
 // Create $photoDir if it doesn't exist
 if (!file_exists($photoDir)) {
     mkdir($photoDir, 0755, true);
 }
 
 $photos = glob($photoDir . DIRECTORY_SEPARATOR . '*.{' . $ext . '}', GLOB_BRACE);
+// Count all photos in $photoDir 
+$totalCount = count($photos);
 // Check if $photoDir is empty
 if ($totalCount === 0) {
-    exit("<center><code style='color: red;'>No photos found.</code></center>");
+    exit("<center><code style='color: red;'>No photos found</code></center>");
 } else {
-    // Count all photos in $photoDir 
-    $totalCount = count($photos);
     // Find the most recent photo to center the map on
     // $totalCount-1 because arrays start with 0
     $initPhoto = $photos[$totalCount - 1];
