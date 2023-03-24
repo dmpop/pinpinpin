@@ -63,6 +63,15 @@ function read_gps_location($file)
     }
     return false;
 }
+
+// Find and remove photos that are not geotagged
+foreach ($photos as $file) {
+    $info = exif_read_data($file);
+    if (!isset($info['GPSLatitude']) && !isset($info['GPSLongitude']))
+        {
+        unlink($file);
+    }
+}
 ?>
 
 <!DOCTYPE html>
