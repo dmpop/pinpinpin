@@ -1,5 +1,5 @@
 <?php
-$PASSWORD = 'secret';
+$PASSWORD = "secret";
 $photoDir = "photos";
 
 if (isset($_POST['submit']) && isset($_POST['password'])) {
@@ -18,11 +18,32 @@ if (isset($_POST['submit']) && isset($_POST['password'])) {
     }
 }
 ?>
-<form method='post' action='' enctype='multipart/form-data'>
-    Password: <input type="password" name="password">
-    <input type="file" name="file[]" id="file" multiple>
 
-    <input type='submit' name='submit' value='Upload'>
-</form>
+<!DOCTYPE html>
 
-<a href="index.php">Home</a>
+<!--
+Author: Dmitri Popov
+License: GPLv3 https://www.gnu.org/licenses/gpl-3.0.txt
+Source code: https://github.com/dmpop/pinpinpin
+-->
+
+<html>
+
+<head>
+    <title>PinPinPin</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.png" />
+</head>
+
+<body>
+    <form method='post' action='' enctype='multipart/form-data'>
+        Password: <input type="password" name="password">
+        <input type="file" name="file[]" id="file" multiple>
+        <input type='submit' name='submit' value='Upload'>
+    </form>
+
+    <a href="index.php">Home</a>
+</body>
+
+</html>
