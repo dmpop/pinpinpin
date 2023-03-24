@@ -23,22 +23,22 @@ if ($totalCount === 0) {
 function read_gps_location($file)
 {
     if (is_file($file)) {
-        $info = exif_read_data($file);
+        $exif = exif_read_data($file);
         if (
-            isset($info['GPSLatitude']) && isset($info['GPSLongitude']) &&
-            isset($info['GPSLatitudeRef']) && isset($info['GPSLongitudeRef']) &&
-            in_array($info['GPSLatitudeRef'], array('E', 'W', 'N', 'S')) && in_array($info['GPSLongitudeRef'], array('E', 'W', 'N', 'S'))
+            isset($exif['GPSLatitude']) && isset($exif['GPSLongitude']) &&
+            isset($exif['GPSLatitudeRef']) && isset($exif['GPSLongitudeRef']) &&
+            in_array($exif['GPSLatitudeRef'], array('E', 'W', 'N', 'S')) && in_array($exif['GPSLongitudeRef'], array('E', 'W', 'N', 'S'))
         ) {
 
-            $GPSLatitudeRef     = strtolower(trim($info['GPSLatitudeRef']));
-            $GPSLongitudeRef = strtolower(trim($info['GPSLongitudeRef']));
+            $GPSLatitudeRef     = strtolower(trim($exif['GPSLatitudeRef']));
+            $GPSLongitudeRef = strtolower(trim($exif['GPSLongitudeRef']));
 
-            $lat_degrees_a = explode('/', $info['GPSLatitude'][0]);
-            $lat_minutes_a = explode('/', $info['GPSLatitude'][1]);
-            $lat_seconds_a = explode('/', $info['GPSLatitude'][2]);
-            $lon_degrees_a = explode('/', $info['GPSLongitude'][0]);
-            $lon_minutes_a = explode('/', $info['GPSLongitude'][1]);
-            $lon_seconds_a = explode('/', $info['GPSLongitude'][2]);
+            $lat_degrees_a = explode('/', $exif['GPSLatitude'][0]);
+            $lat_minutes_a = explode('/', $exif['GPSLatitude'][1]);
+            $lat_seconds_a = explode('/', $exif['GPSLatitude'][2]);
+            $lon_degrees_a = explode('/', $exif['GPSLongitude'][0]);
+            $lon_minutes_a = explode('/', $exif['GPSLongitude'][1]);
+            $lon_seconds_a = explode('/', $exif['GPSLongitude'][2]);
 
             $lat_degrees = $lat_degrees_a[0] / $lat_degrees_a[1];
             $lat_minutes = $lat_minutes_a[0] / $lat_minutes_a[1];
@@ -66,9 +66,8 @@ function read_gps_location($file)
 
 // Find and remove photos that are not geotagged
 foreach ($photos as $file) {
-    $info = exif_read_data($file);
-    if (!isset($info['GPSLatitude']) && !isset($info['GPSLongitude']))
-        {
+    $exif = exif_read_data($file);
+    if (!isset($exif['GPSLatitude']) && !isset($exif['GPSLongitude'])) {
         unlink($file);
     }
 }
@@ -137,9 +136,16 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
             $gps = read_gps_location($file);
             $geoURI = "geo:" . $gps['lat'] . "," . $gps['lon'];
             echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
+            $exif = exif_read_data($file, 0, true);
+            if (empty($exif['COMMENT']['0'])) {
+                $caption = "";
+            } else {
+                $caption = $exif['COMMENT']['0'];
+                $caption = str_replace(array("\r", "\n"), '', $caption);
+            }
             echo  'icon: posPin';
             echo "}).addTo(map)";
-            echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $file . "\" width=300px /></a><center><a href=\"" . $geoURI . "\">" . $geoURI . "</a></center>');";
+            echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $file . "\" width=300px /></a>" . $caption . " <a href=\"" . $geoURI . "\">Geo URI</a>');";
         }
         ?>
         L.control.locate({
