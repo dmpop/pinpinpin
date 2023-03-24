@@ -6,57 +6,20 @@ $ext = "jpeg,JPEG";
 if (!file_exists($photoDir)) {
     mkdir($photoDir, 0755, true);
 }
-// Check if the $photoDir is empty
-$photos = glob($photoDir . DIRECTORY_SEPARATOR . '*.{' . $ext . '}', GLOB_BRACE);
-$totalCount = count($photos);
-// Find the most recent photo to center the map on
-// $totalCount-1 because arrays start with 0
-$initPhoto = $photos[$totalCount - 1];
 
+$photos = glob($photoDir . DIRECTORY_SEPARATOR . '*.{' . $ext . '}', GLOB_BRACE);
+// Check if $photoDir is empty
 if ($totalCount === 0) {
     exit("<center><code style='color: red;'>No photos found.</code></center>");
+} else {
+    // Count all photos in $photoDir 
+    $totalCount = count($photos);
+    // Find the most recent photo to center the map on
+    // $totalCount-1 because arrays start with 0
+    $initPhoto = $photos[$totalCount - 1];
 };
-?>
 
-<!DOCTYPE html>
-
-<!--
-Author: Dmitri Popov
-License: GPLv3 https://www.gnu.org/licenses/gpl-3.0.txt
-Source code: https://github.com/dmpop/pinpinpin
-
-Useful resources:
-https://github.com/mpetazzoni/leaflet-gpx
-https://meggsimum.de/webkarte-mit-gps-track-vom-sport/
-https://www.tutorialspoint.com/leafletjs/leafletjs_markers.htm
-https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaflet-js
--->
-
-<html>
-
-<head>
-    <title>PinPinPin</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="favicon.png" />
-    <link rel="stylesheet" href="leaflet/leaflet.css" />
-    <script src="leaflet/leaflet.js"></script>
-    <link rel="stylesheet" href="leaflet/L.Control.Locate.min.css" />
-    <script src="leaflet/L.Control.Locate.min.js" charset="utf-8"></script>
-
-    <style>
-        html,
-        body,
-        #map {
-            margin: 0;
-            height: 100%;
-            width: 100%;
-        }
-    </style>
-</head>
-
-<?php
-
+// Function to read GPS coordinates from geotagged photos
 function read_gps_location($file)
 {
     if (is_file($file)) {
@@ -101,6 +64,43 @@ function read_gps_location($file)
     return false;
 }
 ?>
+
+<!DOCTYPE html>
+
+<!--
+Author: Dmitri Popov
+License: GPLv3 https://www.gnu.org/licenses/gpl-3.0.txt
+Source code: https://github.com/dmpop/pinpinpin
+
+Useful resources:
+https://github.com/mpetazzoni/leaflet-gpx
+https://meggsimum.de/webkarte-mit-gps-track-vom-sport/
+https://www.tutorialspoint.com/leafletjs/leafletjs_markers.htm
+https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaflet-js
+-->
+
+<html>
+
+<head>
+    <title>PinPinPin</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.png" />
+    <link rel="stylesheet" href="leaflet/leaflet.css" />
+    <script src="leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="leaflet/L.Control.Locate.min.css" />
+    <script src="leaflet/L.Control.Locate.min.js" charset="utf-8"></script>
+
+    <style>
+        html,
+        body,
+        #map {
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
 
 <script type="text/javascript">
     var init = function() {
