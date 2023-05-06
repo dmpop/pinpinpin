@@ -1,6 +1,6 @@
 # PinPinPin
 
-A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to show geotagged photos on the OpenStreetMap map.
+A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to show geotagged photos and GPX files on the OpenStreetMap map.
 
 # Prerequisites
 
