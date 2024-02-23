@@ -1,0 +1,14 @@
+html,
+body,
+#map {
+  font-family: "Inter", sans-serif !important;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  src: url("InterDisplay-Regular.woff2") format("woff2");
+}

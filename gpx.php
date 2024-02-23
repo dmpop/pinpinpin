@@ -33,20 +33,12 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="favicon.png" />
+    <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <script src="leaflet/leaflet.js"></script>
     <script src="leaflet/gpx.js"></script>
     <link rel="stylesheet" href="leaflet/L.Control.Locate.min.css" />
     <script src="leaflet/L.Control.Locate.min.js" charset="utf-8"></script>
-    <style>
-        html,
-        body,
-        #map {
-            margin: 0;
-            height: 100%;
-            width: 100%;
-        }
-    </style>
 </head>
 
 <?php

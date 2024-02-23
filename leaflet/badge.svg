@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="132.29166mm"
+   height="132.29166mm"
+   viewBox="0 0 132.29166 132.29165"
+   version="1.1"
+   id="svg822"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="badge.svg"
+   inkscape:export-filename="/home/dmpop/badge.png"
+   inkscape:export-xdpi="6.1440005"
+   inkscape:export-ydpi="6.1440005"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs816" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="147.85714"
+     inkscape:cy="115"
+     inkscape:document-units="mm"
+     inkscape:current-layer="g817"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="2560"
+     inkscape:window-height="1368"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:pagecheckerboard="0" />
+  <metadata
+     id="metadata819">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-52.752087,-65.923722)">
+    <g
+       id="g831"
+       transform="matrix(1.4705882,0,0,1.4705882,-45.466905,-44.722164)">
+      <g
+         id="g817"
+         transform="matrix(0.92429716,0,0,0.92429716,7.9864463,7.9781872)">
+        <circle
+           style="fill:#b4efff;fill-opacity:1;stroke:#31d3ff;stroke-width:6.7107;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path951"
+           cx="112.28168"
+           cy="121.43301"
+           r="45.307751" />
+      </g>
+    </g>
+  </g>
+</svg>
