@@ -105,20 +105,25 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
             layers: [tiles]
         });
 
+        var Pin = L.icon({
+            iconUrl: 'pins/pin.png',
+            shadowUrl: 'pins/pin-shadow.png',
+        });
+
         var markers = L.markerClusterGroup();
         <?php
         foreach ($photos as $file) {
             // Get latitude and longitude values
-			$exif = @exif_read_data($file, 0, true);
-			$lat = gps($exif["GPS"]["GPSLatitude"], $exif["GPS"]["GPSLatitudeRef"]);
-			$lon = gps($exif["GPS"]["GPSLongitude"], $exif["GPS"]["GPSLongitudeRef"]);
+            $exif = @exif_read_data($file, 0, true);
+            $lat = gps($exif["GPS"]["GPSLatitude"], $exif["GPS"]["GPSLatitudeRef"]);
+            $lon = gps($exif["GPS"]["GPSLongitude"], $exif["GPS"]["GPSLongitudeRef"]);
             if (empty($exif['COMMENT']['0'])) {
                 $caption = "";
             } else {
                 $caption = $exif['COMMENT']['0'];
                 $caption = str_replace(array("\r", "\n"), '', $caption);
             }
-            echo 'var marker = L.marker(new L.LatLng(' . $lat . ', ' . $lon . '));';
+            echo 'var marker = L.marker(new L.LatLng(' . $lat . ', ' . $lon . '), {icon: Pin});';
             echo "marker.bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
             echo 'markers.addLayer(marker);';
         }
@@ -127,9 +132,9 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
 
         <?php
         // Get latitude and longitude values og the last photo
-			$exif = @exif_read_data($last_photo, 0, true);
-			$lat = gps($exif["GPS"]["GPSLatitude"], $exif["GPS"]["GPSLatitudeRef"]);
-			$lon = gps($exif["GPS"]["GPSLongitude"], $exif["GPS"]["GPSLongitudeRef"]);
+        $exif = @exif_read_data($last_photo, 0, true);
+        $lat = gps($exif["GPS"]["GPSLatitude"], $exif["GPS"]["GPSLatitudeRef"]);
+        $lon = gps($exif["GPS"]["GPSLongitude"], $exif["GPS"]["GPSLongitudeRef"]);
         ?>
         map.panTo(new L.LatLng(<?php echo $lat; ?>, <?php echo $lon; ?>));
     </script>

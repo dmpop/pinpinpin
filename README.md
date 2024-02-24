@@ -1,6 +1,6 @@
 # PinPinPin
 
-A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to show geotagged photos and GPX files on the OpenStreetMap map.
+A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to show geotagged photos on the OpenStreetMap map.
 
 # Prerequisites
 
@@ -8,16 +8,16 @@ A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to 
 - PHP 7.x or higher
 - PHP-GD and PHP-EXIF modules
 
-# Limitations
-
-- If multiple photos have the exact same geographical coordinates, only the most recent photo is shown on the map.
-
 # Installation
 
 1. Fetch the latest code using Git with the `https://github.com/dmpop/pinpinpin.git` command. Alternatively, download the code as a ZIP archive from the project's [GitHub repository](https://github.com/dmpop/pinpinpin).
-2. In the resulting _pinpinpin_ directory, open the _index.php_ file for editing. Specify the correct path to the directory containing photos (the `$photoDir` variable) and the desired file extensions (the `$ext` variable). Save the changes. This step is optional.
+2. In the resulting _pinpinpin_ directory, open the _index.php_ file for editing. Specify the correct path to the directory containing photos (the `$photo_dir` variable) and the desired file extensions (the `$ext` variable). Save the changes. This step is optional.
 3. Move the resulting _pinpinpin_ directory to the document root of the web server.
 4. Put photos into the specified photo directory.
+
+## Limitations
+
+PinPinPin doesn't support subdirectories.
 
 # Using PinPinPin
 
@@ -25,11 +25,8 @@ A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to 
 - Click on a marker to see a photo preview in a popup.
 - Click on the preview image to open the full-resolution original in a new browser window.
 - Use **+** and **-** buttons or the mouse to zoom in and out.
-- Use **My current position** button to see you current location on the map.
 
 The [Linux Photography](https://gumroad.com/l/linux-photography) book provides detailed instructions on installing and using PinPinPin. Get your copy at [Google Play Store](https://play.google.com/store/books/details/Dmitri_Popov_Linux_Photography?id=cO70CwAAQBAJ) or [Gumroad](https://gumroad.com/l/linux-photography).
-
-<img src="https://tokyoma.de/bookcovers/linux-photography.jpg" title="Linux Photography book" width="200"/>
 
 ## Problems?
 
