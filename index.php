@@ -1,27 +1,27 @@
 <?php
-$photoDir = "photos";
-$ext = "jpeg,JPEG";
+$photo_dir = "photos";
+$ext = "jpg,JPG";
 
 // Check whether the php-exif library is installed
 if (!extension_loaded('exif')) {
     exit("<center><code style='color: red;'>php-exif is not installed</code></center>");
 }
 
-// Create $photoDir if it doesn't exist
-if (!file_exists($photoDir)) {
-    mkdir($photoDir, 0755, true);
+// Create $photo_dir if it doesn't exist
+if (!file_exists($photo_dir)) {
+    mkdir($photo_dir, 0755, true);
 }
 
-$photos = glob($photoDir . DIRECTORY_SEPARATOR . '*.{' . $ext . '}', GLOB_BRACE);
-// Count all photos in $photoDir 
-$totalCount = count($photos);
-// Check if $photoDir is empty
-if ($totalCount === 0) {
+$photos = glob($photo_dir . DIRECTORY_SEPARATOR . '*.{' . $ext . '}', GLOB_BRACE);
+// Count all photos in $photo_dir 
+$total_count = count($photos);
+// Check if $photo_dir is empty
+if ($total_count === 0) {
     exit("<center><code style='color: red;'>No photos found</code></center>");
 } else {
     // Find the most recent photo to center the map on
-    // $totalCount-1 because arrays start with 0
-    $initPhoto = $photos[$totalCount - 1];
+    // $total_count-1 because arrays start with 0
+    $first_photo = $photos[$total_count - 1];
 };
 
 // Function to read GPS coordinates from geotagged photos
@@ -104,57 +104,41 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <script src="leaflet/leaflet.js"></script>
     <link rel="stylesheet" href="leaflet/L.Control.Locate.min.css" />
     <script src="leaflet/L.Control.Locate.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="leaflet/MarkerCluster.css" />
+    <link rel="stylesheet" href="leaflet/MarkerCluster.Default.css" />
+    <script src="leaflet/leaflet.markercluster.js"></script>
 </head>
 
-<script type="text/javascript">
-    var init = function() {
-        <?php
-        $initCoord = read_gps_location($initPhoto);
-        ?>
-        var map = L.map('map').setView([<?php echo $initCoord['lat']; ?>, <?php echo $initCoord['lon']; ?>], 5);
-        L.tileLayer(
-            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. Photos: <?php echo $totalCount; ?>',
-                maxZoom: 19,
-            }).addTo(map);
+<body>
+    <div id="map"></div>
 
-        var posPin = L.icon({
-            iconUrl: 'pin-icon-pos.png'
+    <script type="text/javascript">
+        var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors,  This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. Photos: <?php echo $total_count; ?>'
+            });
+
+        var map = L.map('map', {
+            zoom: 9,
+            layers: [tiles]
         });
 
-        var endPin = L.icon({
-            iconUrl: 'pin-icon-end.png'
-        });
-
-        // Add markers with popups
+        var markers = L.markerClusterGroup();
         <?php
         foreach ($photos as $file) {
             $gps = read_gps_location($file);
-            $geoURI = "geo:" . $gps['lat'] . "," . $gps['lon'];
-            echo "L.marker([" . $gps['lat'] . ", " . $gps['lon'] . "], {";
-            $exif = exif_read_data($file, 0, true);
-            if (empty($exif['COMMENT']['0'])) {
-                $caption = "";
-            } else {
-                $caption = $exif['COMMENT']['0'];
-                $caption = str_replace(array("\r", "\n"), '', $caption);
-            }
-            echo  'icon: posPin';
-            echo "}).addTo(map)";
-            echo ".bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $file . "\" width=300px /></a>" . $caption . " <a href=\"" . $geoURI . "\">Geo URI</a>');";
+            echo 'var marker = L.marker(new L.LatLng(' . $gps['lat'] . ', ' . $gps['lon'] . '));';
+            echo "marker.bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
+            echo 'markers.addLayer(marker);';
         }
         ?>
-        L.control.locate({
-            strings: {
-                title: "My current position"
-            }
-        }).addTo(map);
-        L.control.layers(background, overlays).addTo(map);
-    }
-</script>
+        map.addLayer(markers);
 
-<body onload="init()">
-    <div id="map"></div>
+        <?php
+        $init_coordinates = read_gps_location($first_photo);
+        ?>
+        map.panTo(new L.LatLng(<?php echo $init_coordinates['lat']; ?>, <?php echo $init_coordinates['lon']; ?>));
+    </script>
 </body>
 
 </html>
