@@ -21,58 +21,40 @@ if ($total_count === 0) {
 } else {
     // Find the most recent photo to center the map on
     // $total_count-1 because arrays start with 0
-    $first_photo = $photos[$total_count - 1];
+    $last_photo = $photos[$total_count - 1];
 };
 
-// Function to read GPS coordinates from geotagged photos
-function read_gps_location($file)
+/* EXTRACT LATITUDE AND LONGITUDE ---START---
+	   * https://stackoverflow.com/a/16437888
+	   */
+function gps($coordinate, $hemisphere)
 {
-    if (is_file($file)) {
-        $exif = exif_read_data($file);
-        if (
-            isset($exif['GPSLatitude']) && isset($exif['GPSLongitude']) &&
-            isset($exif['GPSLatitudeRef']) && isset($exif['GPSLongitudeRef']) &&
-            in_array($exif['GPSLatitudeRef'], array('E', 'W', 'N', 'S')) && in_array($exif['GPSLongitudeRef'], array('E', 'W', 'N', 'S'))
-        ) {
-
-            $GPSLatitudeRef     = strtolower(trim($exif['GPSLatitudeRef']));
-            $GPSLongitudeRef = strtolower(trim($exif['GPSLongitudeRef']));
-
-            $lat_degrees_a = explode('/', $exif['GPSLatitude'][0]);
-            $lat_minutes_a = explode('/', $exif['GPSLatitude'][1]);
-            $lat_seconds_a = explode('/', $exif['GPSLatitude'][2]);
-            $lon_degrees_a = explode('/', $exif['GPSLongitude'][0]);
-            $lon_minutes_a = explode('/', $exif['GPSLongitude'][1]);
-            $lon_seconds_a = explode('/', $exif['GPSLongitude'][2]);
-
-            $lat_degrees = $lat_degrees_a[0] / $lat_degrees_a[1];
-            $lat_minutes = $lat_minutes_a[0] / $lat_minutes_a[1];
-            $lat_seconds = $lat_seconds_a[0] / $lat_seconds_a[1];
-            $lon_degrees = $lon_degrees_a[0] / $lon_degrees_a[1];
-            $lon_minutes = $lon_minutes_a[0] / $lon_minutes_a[1];
-            $lon_seconds = $lon_seconds_a[0] / $lon_seconds_a[1];
-
-            $lat = (float) $lat_degrees + ((($lat_minutes * 60) + ($lat_seconds)) / 3600);
-            $lon = (float) $lon_degrees + ((($lon_minutes * 60) + ($lon_seconds)) / 3600);
-
-            // If the latitude is South, make it negative
-            // If the longitude is west, make it negative
-            $GPSLatitudeRef     == 's' ? $lat *= -1 : '';
-            $GPSLongitudeRef == 'w' ? $lon *= -1 : '';
-
-            return array(
-                'lat' => $lat,
-                'lon' => $lon
-            );
+    if (is_string($coordinate)) {
+        $coordinate = array_map("trim", explode(",", $coordinate));
+    }
+    for ($i = 0; $i < 3; $i++) {
+        $part = explode('/', $coordinate[$i]);
+        if (count($part) == 1) {
+            $coordinate[$i] = $part[0];
+        } else if (count($part) == 2) {
+            $coordinate[$i] = floatval($part[0]) / floatval($part[1]);
+        } else {
+            $coordinate[$i] = 0;
         }
     }
-    return false;
+    list($degrees, $minutes, $seconds) = $coordinate;
+    $sign = ($hemisphere == 'W' || $hemisphere == 'S') ? -1 : 1;
+    return $sign * ($degrees + $minutes / 60 + $seconds / 3600);
 }
+/* EXTRACT LATITUDE AND LONGITUDE ---END--- */
 
 // Find and remove photos that are not geotagged
 foreach ($photos as $file) {
-    $exif = exif_read_data($file);
-    if (!isset($exif['GPSLatitude']) && !isset($exif['GPSLongitude'])) {
+    // Get latitude and longitude values
+    $exif = @exif_read_data($file, 0, true);
+    $lat = gps($exif["GPS"]["GPSLatitude"], $exif["GPS"]["GPSLatitudeRef"]);
+    $lon = gps($exif["GPS"]["GPSLongitude"], $exif["GPS"]["GPSLongitudeRef"]);
+    if (!isset($lat) && !isset($lon)) {
         unlink($file);
     }
 }
@@ -114,9 +96,9 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
 
     <script type="text/javascript">
         var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors,  This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. Photos: <?php echo $total_count; ?>'
-            });
+            maxZoom: 18,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors,  This is <a href="https://github.com/dmpop/pinpinpin">PinPinPin</a>. Photos: <?php echo $total_count; ?>'
+        });
 
         var map = L.map('map', {
             zoom: 9,
@@ -126,8 +108,17 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
         var markers = L.markerClusterGroup();
         <?php
         foreach ($photos as $file) {
-            $gps = read_gps_location($file);
-            echo 'var marker = L.marker(new L.LatLng(' . $gps['lat'] . ', ' . $gps['lon'] . '));';
+            // Get latitude and longitude values
+			$exif = @exif_read_data($file, 0, true);
+			$lat = gps($exif["GPS"]["GPSLatitude"], $exif["GPS"]["GPSLatitudeRef"]);
+			$lon = gps($exif["GPS"]["GPSLongitude"], $exif["GPS"]["GPSLongitudeRef"]);
+            if (empty($exif['COMMENT']['0'])) {
+                $caption = "";
+            } else {
+                $caption = $exif['COMMENT']['0'];
+                $caption = str_replace(array("\r", "\n"), '', $caption);
+            }
+            echo 'var marker = L.marker(new L.LatLng(' . $lat . ', ' . $lon . '));';
             echo "marker.bindPopup('<a href=\"" . $file . "\"  target=\"_blank\"><img src=\"tim.php?image=" . $file . "\" width=300px /></a>" . $caption . "');";
             echo 'markers.addLayer(marker);';
         }
@@ -135,9 +126,12 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
         map.addLayer(markers);
 
         <?php
-        $init_coordinates = read_gps_location($first_photo);
+        // Get latitude and longitude values og the last photo
+			$exif = @exif_read_data($last_photo, 0, true);
+			$lat = gps($exif["GPS"]["GPSLatitude"], $exif["GPS"]["GPSLatitudeRef"]);
+			$lon = gps($exif["GPS"]["GPSLongitude"], $exif["GPS"]["GPSLongitudeRef"]);
         ?>
-        map.panTo(new L.LatLng(<?php echo $init_coordinates['lat']; ?>, <?php echo $init_coordinates['lon']; ?>));
+        map.panTo(new L.LatLng(<?php echo $lat; ?>, <?php echo $lon; ?>));
     </script>
 </body>
 
