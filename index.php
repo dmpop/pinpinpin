@@ -66,12 +66,6 @@ foreach ($photos as $file) {
 Author: Dmitri Popov
 License: GPLv3 https://www.gnu.org/licenses/gpl-3.0.txt
 Source code: https://github.com/dmpop/pinpinpin
-
-Useful resources:
-https://github.com/mpetazzoni/leaflet-gpx
-https://meggsimum.de/webkarte-mit-gps-track-vom-sport/
-https://www.tutorialspoint.com/leafletjs/leafletjs_markers.htm
-https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaflet-js
 -->
 
 <html>
@@ -84,8 +78,6 @@ https://stackoverflow.com/questions/42968243/how-to-add-multiple-markers-in-leaf
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <script src="leaflet/leaflet.js"></script>
-    <link rel="stylesheet" href="leaflet/L.Control.Locate.min.css" />
-    <script src="leaflet/L.Control.Locate.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="leaflet/MarkerCluster.css" />
     <link rel="stylesheet" href="leaflet/MarkerCluster.Default.css" />
     <script src="leaflet/leaflet.markercluster.js"></script>
