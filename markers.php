@@ -1,5 +1,8 @@
 <?php
 $csv_file = "markers.csv";
+if (!file_exists($csv_file)) {
+    exit("<center><code style='color: red;'>$csv_file not found.</code></center>");
+    }
 ?>
 
 <!DOCTYPE html>
