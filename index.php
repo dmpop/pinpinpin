@@ -1,6 +1,6 @@
 <?php
 $photo_dir = "photos";
-$ext = "jpg,JPG";
+$ext = "jpg,JPG,jpeg,JPEG";
 
 // Check whether the php-exif library is installed
 if (!extension_loaded('exif')) {
