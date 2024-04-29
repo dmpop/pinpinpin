@@ -1,6 +1,6 @@
 # PinPinPin
 
-A crude mix of PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to show geotagged photos on the OpenStreetMap map.
+A simple application wirtten in PHP and JavaScript that uses [Leaflet](https://leafletjs.com) to show geotagged photos on the OpenStreetMap map.
 
 # Prerequisites
 
@@ -28,6 +28,8 @@ PinPinPin doesn't support subdirectories.
 
 The [Linux Photography](https://gumroad.com/l/linux-photography) book provides detailed instructions on installing and using PinPinPin. Get your copy at [Google Play Store](https://play.google.com/store/books/details/Dmitri_Popov_Linux_Photography?id=cO70CwAAQBAJ) or [Gumroad](https://gumroad.com/l/linux-photography).
 
+<img src="https://cameracode.coffee/uploads/linux-photography.png" title="Linux Photography" width="300"/>
+
 ## Problems?
 
 Please report bugs and issues in the [Issues](https://github.com/dmpop/pinpinpin/issues) section.
@@ -46,7 +48,7 @@ To add a new feature or fix issues yourself, follow the following steps.
 
 ## Author
 
-Dmitri Popov [dmpop@linux.com](mailto:dmpop@linux.com)
+Dmitri Popov [dmpop@cameracode.coffee](mailto:dmpop@cameracode.coffee)
 
 ## License
 
